@@ -1,0 +1,21 @@
+{
+  "variant": "final",
+  "slides": 25,
+  "totalSeconds": 1800,
+  "notes": 25,
+  "rendering": "LibreOffice PPTX→PDF; pdftoppm previews",
+  "editableText": true,
+  "sdkPreservation": {
+    "source_package_relationships_valid": true,
+    "import_verified": true,
+    "displayed_order_correct": true,
+    "slide_xml_byte_identical": true,
+    "source_visible_text_identical": true,
+    "media_byte_identical": true,
+    "copied_non_notes_parts_byte_identical": true,
+    "package_relationships_valid": true,
+    "source_file_unchanged": true
+  },
+  "pptx": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/kubecon-2026-final.pptx",
+  "pdf": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/kubecon-2026-final.pdf"
+}

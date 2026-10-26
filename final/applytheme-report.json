@@ -1,0 +1,128 @@
+{
+  "status": "verified",
+  "pptx": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/kubecon-2026-final.pptx",
+  "profile": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/theme.json",
+  "sourceLayoutPart": "ppt/slideLayouts/slideLayout5.xml",
+  "generatedSlides": [
+    {
+      "displayedSlide": 1,
+      "part": "ppt/slides/slide1.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 2,
+      "part": "ppt/slides/slide2.xml",
+      "relationshipId": "rId1",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 3,
+      "part": "ppt/slides/slide3.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 4,
+      "part": "ppt/slides/slide4.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 5,
+      "part": "ppt/slides/slide5.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 6,
+      "part": "ppt/slides/slide6.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 7,
+      "part": "ppt/slides/slide7.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 8,
+      "part": "ppt/slides/slide8.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 9,
+      "part": "ppt/slides/slide9.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 10,
+      "part": "ppt/slides/slide10.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 11,
+      "part": "ppt/slides/slide11.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 12,
+      "part": "ppt/slides/slide12.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 13,
+      "part": "ppt/slides/slide13.xml",
+      "relationshipId": "rId1",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 24,
+      "part": "ppt/slides/slide14.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 25,
+      "part": "ppt/slides/slide15.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    }
+  ],
+  "sdkPartsByteIdentical": true,
+  "sdkSlideXmlByteIdentical": true,
+  "sdkMediaByteIdentical": true,
+  "generatedSlideXmlByteIdentical": true,
+  "notesByteIdentical": true,
+  "onlyGeneratedLayoutRelationshipsChanged": true,
+  "relationshipsValid": true,
+  "displayedSlides": 25,
+  "sdkPartsChecked": 90,
+  "outputSha256": "03d6aa733a386a5f1538dfcc0465ed0272280bfab9896f24c7530d567fc57e03",
+  "limitations": [
+    "Explicit shape formatting and image pixels are preserved; generate them using theme.json.",
+    "Opaque content or showMasterSp=0 can hide inherited branding; reserve the footer before generating.",
+    "No visual rendering validation is performed by this relationship-only applicator."
+  ]
+}

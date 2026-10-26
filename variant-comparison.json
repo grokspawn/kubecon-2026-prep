@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "variants": {
+    "review": "passed",
+    "final": "passed"
+  },
+  "sameLogicalTitles": true,
+  "samePublicMainContent": true,
+  "sdkUnchangedBoth": true,
+  "differences": []
+}

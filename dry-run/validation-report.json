@@ -1,0 +1,157 @@
+{
+  "variant": "review",
+  "status": "passed",
+  "errors": [],
+  "offCanvasObjects": [],
+  "overlappingTextBoxes": [],
+  "brandingObstructions": [],
+  "sdkUnchanged": true,
+  "sdkSlideXmlUnchanged": true,
+  "sdkResourcesUnchanged": true,
+  "sdkSourceFileUnchanged": true,
+  "pdfPages": 25,
+  "pdfReviewMarkCheck": "not applicable",
+  "slides": 25,
+  "notes": 25,
+  "seconds": 1800,
+  "generatedSlides": 15,
+  "sdkOriginalSlides": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "sdkOutputSlides": [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "sourceMediaCount": 11,
+  "sdkSourceSha256": "dac21407ed62d03b404155a3bf6cbde10a22412d407c90485534eb3a28cba92c",
+  "pptxSha256": "0cdf177878758616709442b70d532b485025fa595f380f06aa0d4ada0b3891b0",
+  "logicalSlides": [
+    {
+      "title": "The Next Era of Kubernetes Operator Lifecycle Management",
+      "content": "The Next Era of Kubernetes Operator Lifecycle Management KubeCon + CloudNativeCon North America 2026"
+    },
+    {
+      "title": "Presentation team",
+      "content": "Presentation team Rashmi Joe Jordan"
+    },
+    {
+      "title": "Compatibility and lifecycle foundations",
+      "content": "Compatibility and lifecycle foundations FOUNDATIONAL WORK OLM evolution builds on existing packages and operational experience. OLMv0 established lifecycle management Existing registry+v1 content shapes compatibility Operational experience informs OLMv1 Existing content and users shape lifecycle implementation."
+    },
+    {
+      "title": "OLM: past, current and future",
+      "content": "OLM: past, current and future EVOLUTION / PLANNED / FUTURE WORK OLM feature evolution Past: OLMv0, flawed namespace-local CRD visibility assumptions, SQLite, FBC Current: OLMv1, ClusterExtension, pins, webhooks Ongoing: rollouts, config, install, migration Planned: helm+v2 and v2 schemas. Future: OCI catalog storage."
+    },
+    {
+      "title": "Install a bundle directly",
+      "content": "Install a bundle directly IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE Select a registry+v1 bundle by its OCI image reference. Use sourceType: OCIImage Set source.ociImage.ref Bypass catalog resolution Proposed in open PR #2907; controlled by BoxcutterRuntime."
+    },
+    {
+      "title": "Inspect phased resource rollouts",
+      "content": "Inspect phased resource rollouts IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE Ordered phases expose resource application and readiness progress. Apply resource groups in phase order Wait for applicable readiness checks Inspect revision content and ownership changes Readiness checks show which phase is waiting."
+    },
+    {
+      "title": "User control of extension deployments",
+      "content": "User control of extension deployments IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE Flexible user-defined deployment configuration. Environment variables and resource settings Placement, volumes and deployment metadata Operator-provided configuration and schemas OLM applies user choices through operator configuration."
+    },
+    {
+      "title": "OLMv0 \u2192 OLMv1 migration",
+      "content": "OLMv0 \u2192 OLMv1 migration IN ACTIVE DEVELOPMENT Move operator management from OLMv0 to OLMv1. Prepare v1 catalogs from v0 CatalogSources Check and preview operator migrations Migration library with example binaries Structured output supports automation and models."
+    },
+    {
+      "title": "Shared lifecycle logic in library-olm",
+      "content": "Shared lifecycle logic in library-olm IN ACTIVE DEVELOPMENT Reuse lifecycle logic through a library with explicit contracts. Share migration checks and workflow logic Exercise current development examples Record expected results in reusable fixtures Examples and fixtures make supported behavior concrete."
+    },
+    {
+      "title": "Planned Helm content support",
+      "content": "Planned Helm content support PLANNED / helm+v2 The rendering contract targets deterministic chart behavior. Chart and values produce managed manifests Allow-listed features support reproducible rendering helm+v2 identifies the content representation Standard chart artifacts use a defined rendering contract."
+    },
+    {
+      "title": "Catalog performance and content types",
+      "content": "Catalog performance and content types PLANNED / FUTURE WORK Design for lower catalog-processing cost and additional content types. Lower duplicated CSV metadata Direct version fields reduce property traversal Typed registry+v1 and helm+v2 content File-based catalogs remain the established foundation."
+    },
+    {
+      "title": "Contribute to Operator Framework",
+      "content": "Contribute to Operator Framework PROJECT DEVELOPMENT Help develop the project through documentation, code and test cases. Improve documentation and examples Contribute code and focused tests Add migration, chart and schema fixtures Start with a reproducible case and a clear expected result."
+    },
+    {
+      "title": "Operator Framework: Java Operator SDK",
+      "content": "Operator Framework: Java Operator SDK"
+    },
+    {
+      "title": "Read-Cache-After-Write Consistency",
+      "content": "Read-Cache-After-Write Consistency since v5.3 API: UpdateControl.patchStatus(resource) context. resourceOperations() .serverSideApply(resource); Additional cache brings complexity: Indexers Items store Comparable Resource Versions KEP Read-cache-after-write consistency blog",
+      "sdkXmlSha256": "afb71899a97c2267a8d3c863e8ab507a6ab50f68a79465b01c796cc06fc311ab"
+    },
+    {
+      "title": "Read-Cache-After-Write Consistency",
+      "content": "Read-Cache-After-Write Consistency",
+      "sdkXmlSha256": "865396f5aca3c45b507ac89d6eaf7672c6331ccd1ef981dba632fcd32a972aa1"
+    },
+    {
+      "title": "Event Filtering - API & Challenges",
+      "content": "Event Filtering - API & Challenges Filter out events for our own updates Challenges Informer lost event problem Our update did not change the resource but other actor did concurrently context. resourceOperations() .serverSideApply(resource);",
+      "sdkXmlSha256": "352d4bf3ddbeac0f57a6d72e1dc1bc2b1967a72e975cf95b3f439d43363ee940"
+    },
+    {
+      "title": "Event Filtering",
+      "content": "Event Filtering for Read-Cache-After-Write-Consistency",
+      "sdkXmlSha256": "a6d57bc25ffe8c517df543820c0f29662c76915fc1cd8efe546171051c432aec"
+    },
+    {
+      "title": "Informer Pools",
+      "content": "Informer Pools Sharing underlying informers between controller Matches the informer configuration Except list limit Details in InformerClassifier Supports dynamic Informer registration and de-registration",
+      "sdkXmlSha256": "cde7c2cd2fa255fa4b9a615923f3b2b9c393077cb07b15f609b6075b9291eee6"
+    },
+    {
+      "title": "Informer Pools",
+      "content": "Informer Pools",
+      "sdkXmlSha256": "61f4d7c38949594431b2d7e89eafcff7c77f9241d05f36dda082a5922e5297d9"
+    },
+    {
+      "title": "Observability stack enhancements",
+      "content": "Observability stack enhancements Facelift over Observability stack Improved logging and Mapped Diagnostic Context (MDC) Putting event and primary resource to MDC if available Metrics API refined MicrometerMetricsV2 Generic Grafana Dashboard Sample with OTel + Prometheus + Grafana",
+      "sdkXmlSha256": "712570601a5a8fa74a8e926bf1d464794df412126a9fbe05daa92f241a7ba232"
+    },
+    {
+      "title": "Java Virtual Threads (WIP)",
+      "content": "Java Virtual Threads (WIP) Planned for v5.7.0 We will officially support this for Java 25+ (but will work with Java 21+) Replacing ThreadPools with virtual threads across framework Virtually unlimited number of concurrent reconciliation The explicit limit applies though",
+      "sdkXmlSha256": "de0a4c20d2079f976489e48c7bd5e539d324a808cbbbfee1d1ce5c369354d7a2"
+    },
+    {
+      "title": "Java Virtual Threads (WIP)",
+      "content": "Java Virtual Threads (WIP)",
+      "sdkXmlSha256": "2dca59ee63c7250d0ddc127c8d9813514520de2dc28df39cdeeaacbfaf38d3f6"
+    },
+    {
+      "title": "Some honorable mentions\u2026",
+      "content": "Some honorable mentions\u2026 EventRecorder API ShardSelector support Documentation improvements - operations section",
+      "sdkXmlSha256": "73c21b70c826143b90d57055d43dab7f970cffa9edb8e462f60a0c40c7b0e627"
+    },
+    {
+      "title": "Resources and contribution steps",
+      "content": "Resources and contribution steps RESOURCE PACKAGE TO PREPARE Use documented contracts and reproducible cases to guide contributions. Check content against a documented contract Share a reproducible case or fixture Select a maintainer-scoped contribution Companion examples and task links are being prepared."
+    },
+    {
+      "title": "Questions?",
+      "content": "Questions? Questions about lifecycle APIs, packaging or controller behavior? OLM configuration and migration Helm content and catalog schemas Java Operator SDK reconciliation Discussion of capabilities and proposed work."
+    }
+  ]
+}

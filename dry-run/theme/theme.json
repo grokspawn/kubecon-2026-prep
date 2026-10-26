@@ -1,0 +1,72 @@
+{
+  "font": "Arial",
+  "titleColor": "00144C",
+  "bodyColor": "052243",
+  "background": "FFFFFF",
+  "sourceLayoutPart": "ppt/slideLayouts/slideLayout5.xml",
+  "brandingFooterTopPt": 361.528819,
+  "diagramColors": {
+    "background": "FFFFFF",
+    "ink": "000000",
+    "navy": "00144C",
+    "flow": "113E82",
+    "highlight": "D62293",
+    "muted": "052243",
+    "line": "ADC5EF",
+    "flowFill": "E3F6FF",
+    "highlightFill": "FFEE88",
+    "white": "FFFFFF"
+  },
+  "assetsDir": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets",
+  "titleFont": "Arial",
+  "bodyFont": "Arial",
+  "titleFontSizePt": 28.0,
+  "bodyFontSizePt": 12.0,
+  "titleBold": true,
+  "titleBoundsPt": {
+    "x": 24.543307,
+    "y": 35.041339,
+    "width": 670.913386,
+    "height": 45.094488
+  },
+  "bodyBoundsPt": {
+    "x": 24.543307,
+    "y": 90.746063,
+    "width": 670.913386,
+    "height": 261.212598
+  },
+  "brandingBoundsPt": [
+    {
+      "part": "ppt/slideLayouts/slideLayout5.xml",
+      "mediaPart": "ppt/media/image8.png",
+      "x": 24.543307,
+      "y": 361.528819,
+      "width": 87.590551,
+      "height": 36.813465
+    }
+  ],
+  "sourceMasterPart": "ppt/slideMasters/slideMaster1.xml",
+  "sourceThemePart": "ppt/theme/theme2.xml",
+  "themeColors": {
+    "dk1": "000000",
+    "lt1": "FFFFFF",
+    "dk2": "052243",
+    "lt2": "113E82",
+    "accent1": "D62293",
+    "accent2": "FFEE88",
+    "accent3": "113851",
+    "accent4": "2E9C68",
+    "accent5": "40BE95",
+    "accent6": "E3F6FF",
+    "hlink": "ADC5EF",
+    "folHlink": "FFF7BD"
+  },
+  "source": "/Users/jordan/Downloads/Copy of KubeCon2026.pptx",
+  "sourceSha256": "dac21407ed62d03b404155a3bf6cbde10a22412d407c90485534eb3a28cba92c",
+  "canvasPt": [
+    720,
+    405
+  ],
+  "recommendedContentBottomPt": 351.528819,
+  "notesPlacement": "Keep speaker assignments, timing and sources in notesSlide parts, outside the slide canvas."
+}

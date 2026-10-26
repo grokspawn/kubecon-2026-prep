@@ -1,0 +1,11 @@
+{
+  "name": "kubecon-2026-dry-run",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": { "build": "node build-deck.js" },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1",
+    "playwright": "^1.55.0",
+    "sharp": "^0.34.0"
+  }
+}
