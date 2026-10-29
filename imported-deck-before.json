@@ -1,0 +1,488 @@
+{
+ "title": "kubecon2026",
+ "slideCount": 27,
+ "slides": [
+  {
+   "number": 1,
+   "objectId": "h17c27b4e15e0645b_3_60",
+   "text": [
+    "The Next Era of Kubernetes Operator Lifecycle Management",
+    "KubeCon + CloudNativeCon North America 2026",
+    "1 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s01.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 1: The Next Era of Kubernetes Operator Lifecycle Management\u000bSPEAKER: OLM A — context / host; name to confirm\u000bSTART: 00:00\u000bDURATION: 00:45\u000bSTATUS: \u000b\u000bTAKEAWAY: \u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bWelcome the audience and introduce the talk, The Next Era of Kubernetes Operator Lifecycle Management, at KubeCon + CloudNativeCon North America 2026. Retain the operator-lifecycle illustration. Source: ../kubecon-2026-outline.md.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 2,
+   "objectId": "h17c27b4e15e0645b_3_69",
+   "text": [
+    "Presentation team",
+    "Rashmi",
+    "Joe",
+    "Jordan",
+    "2 / 25"
+   ],
+   "images": [],
+   "notes": [
+    "SLIDE 2: Presentation team\u000bSPEAKER: OLM A — team introduction; name to confirm\u000bSTART: 00:45\u000bDURATION: 00:30\u000bSTATUS: \u000b\u000bTAKEAWAY: \u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bOLM A introduces Rashmi, Joe and Jordan as the OLM presentation team; photos are deferred. Introduce Attila as the fourth presenter, covering Java Operator SDK exclusively. The mapping of Rashmi, Joe and Jordan to OLM roles A/B/C remains unconfirmed. A covers base slides 1–4, B covers 5–9, and C covers 10–13. The primary builder imports original SDK source slides 3–12 unchanged after the divider, allocating 60 seconds to each. These become final slides 14–23; the host closes on final slide 24 and topic owners answer questions on final slide 25. Adding this team slide and removing the standalone assumptions slide preserves 15 base records and 25 displayed slides. The base records total 1,200 seconds; the original SDK segment adds 600 seconds for a 30-minute session. Keep the no-live-demo plan. Sources: ../kubecon-2026-outline.md; ../kubecon-2025-slide-context.md.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 3,
+   "objectId": "h17c27b4e15e0645b_3_81",
+   "text": [
+    "Compatibility and lifecycle foundations",
+    "FOUNDATIONAL WORK",
+    "OLM evolution builds on existing packages and operational experience.",
+    "OLMv0 established lifecycle management\nExisting registry+v1 content shapes compatibility\nOperational experience informs OLMv1",
+    "Existing content and users shape lifecycle implementation.",
+    "3 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s04.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 3: Compatibility and lifecycle foundations\u000bSPEAKER: OLM A — context / host; name to confirm\u000bSTART: 01:15\u000bDURATION: 01:30\u000bSTATUS: FOUNDATIONAL WORK\u000b\u000bTAKEAWAY: OLM evolution builds on existing packages and operational experience.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bUse OLMv0 evolution and compatibility with existing registry+v1 content as the historical basis. Explain how existing package formats, resource ownership and operational behavior shaped lifecycle implementation. Configuration and migration preparation build on that foundation. The bridge illustration is conceptual. This slide makes no measured availability, performance, adoption or elapsed-time claims. Sources: ../kubecon-2025-slide-context.md; ../kubecon-2026-resource-assessment.md; supplied evolution background.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 4,
+   "objectId": "h17c27b4e15e0645b_3_93",
+   "text": [
+    "OLM: past, current and future",
+    "EVOLUTION / PLANNED / FUTURE WORK",
+    "OLM feature evolution",
+    "Past: OLMv0, flawed namespace-local CRD visibility assumptions, SQLite, FBC\nCurrent: OLMv1, ClusterExtension, pins, webhooks\nOngoing: rollouts, config, install, migration",
+    "Planned: helm+v2 and v2 schemas. Future: OCI catalog storage.",
+    "4 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s02.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 4: OLM: past, current and future\u000bSPEAKER: OLM A — context / host; name to confirm\u000bSTART: 02:45\u000bDURATION: 01:15\u000bSTATUS: EVOLUTION / PLANNED / FUTURE WORK\u000b\u000bTAKEAWAY: OLM feature evolution\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bEnumerate the timeline: past work includes OLMv0, SQLite catalogs and established file-based catalogs (FBC). Summarize OLMv0's flawed assumptions about namespace-local CRD visibility, independently managed APIs and watch-aware dependencies. CRD definitions are cluster-scoped shared APIs; custom resource instances may be namespaced, and controller watch scope is configured separately. Shared CRDs can couple operator upgrades. The flawed assumptions belonged to OLMv0's lifecycle model; Kubernetes' cluster-scoped CRD design is the underlying API boundary. Keep the OperatorGroup recap brief and explain how these lessons informed OLMv1. Current OLMv1 capabilities include ClusterExtension, version pins and webhooks. Ongoing development includes resource rollouts, user configuration, direct bundle installation and migration. Direct installation remains an open proposal in PR #2907 at the supplied 2026-10-09 check. Planned work includes Helm content using helm+v2 and v2 catalog schemas. OCI-native catalog storage and transport remain future work. Release-specific availability and feature gates require the source-version qualifications on the detailed slides. The 2025 deck already listed delivered features. A hands off to B after this overview at 04:00. Sources: ../kubecon-2025-slide-context.md slide 9; ../kubecon-2026-resource-assessment.md K-1/K-2/V0-2/V0-3; supplied feature-planning context.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 5,
+   "objectId": "h2e53265e7e1a2617_1_0",
+   "text": [
+    "Streamlined Installation",
+    "This is in the standard install channel as of <upstreamRelease>\n\nThis feature removed the requirement of setting a clusterExtension.spec.serviceAccount (and started ignoring that field if set)\n\nNow, ClusterExtension controller has a cluster-admin SA that it uses for everything, which means CE admins no longer need to find (or create) a service account that has sufficient permissions to manage their installs/updates.\n\nUsers should use ValidatingAdmissionPolicy if they want to delegate permission for ClusterExtension management to non-cluster-admins."
+   ],
+   "images": [],
+   "notes": [
+    "\\"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 6,
+   "objectId": "h17c27b4e15e0645b_0_0",
+   "text": [
+    "Namespace Management",
+    "This is in the experimental channel as of release <upstreamRelease>\n\nThis feature removed the requirement of setting a clusterExtension.spec.namespace.\n\nNow, the new logic is:\u000b- If the namespace is set, we do not manage it. We install bundle objects into it. This is how it has always worked\n- If the namespace is not set, we derive a namespace from the bundle itself, potentially with a suggested template or namespace name to use. This enables operator authors to provide namespace metadata (e.g. PSA labels necessary to make the controller pods run). This also makes OLMv1 manage the namespace, just like all of the other bundle objects. That way namespace metadata can be reconciled, etc.\n\nOne note: When a ClusterExtension with a managed namespace is deleted, the managed Namespace will be deleted. And that means any unmanaged objects in the namespace will also be deleted.\n\nThere's some nuance in the API validations about what kinds of transitions are allowed. (e.g. unset managed namespace to unmanaged namespace might not be allowed)"
+   ],
+   "images": [],
+   "notes": [],
+   "skipped": false
+  },
+  {
+   "number": 7,
+   "objectId": "h17c27b4e15e0645b_3_117",
+   "text": [
+    "Inspect phased resource rollouts",
+    "IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE",
+    "Ordered phases expose resource application and readiness progress.",
+    "Apply resource groups in phase order\nWait for applicable readiness checks\nInspect revision content and ownership changes",
+    "Readiness checks show which phase is waiting.",
+    "6 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s06.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 6: Inspect phased resource rollouts\u000bSPEAKER: OLM B — lifecycle primitives; name to confirm\u000bSTART: 05:30\u000bDURATION: 02:00\u000bSTATUS: IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE\u000b\u000bTAKEAWAY: Ordered phases expose resource application and readiness progress.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bExplain the evolution from ClusterExtensionRevision to ClusterObjectSets. The ascending stair-step illustration shows resource readiness progressing toward the installation goal. Objects within a phase have unspecified ordering. Readiness checks cover defined conditions; application correctness and transactional availability require additional validation. The rollout runtime is in active development and controlled by feature-gate. Pin the source version and gate settings for examples. Reconcile draft Succeeded wording with the inspected Ready/completedAt type before using status examples. Sources: supplied ClusterObjectSets draft and feature-planning context; ../kubecon-2026-resource-assessment.md; ../kubecon-2025-slide-context.md slides 7, 10 and 12.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip\u000b\n\nRephrase from Cluster Object Revision to Cluster Object Deployment, which is a general purpose rollout phase evaluation engine.\nNet new from last year:\nClusterObjectDeployment\nobservedPhases and improved status in general\nRestructured API/behavior for standalone use, separate from OLM\nFuture evolution to namespace-scoped ObjectDeployment is under consideration."
+   ],
+   "skipped": false
+  },
+  {
+   "number": 8,
+   "objectId": "h17c27b4e15e0645b_3_129",
+   "text": [
+    "User control of extension deployments",
+    "IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE",
+    "Flexible user-defined deployment configuration.",
+    "Environment variables and resource settings\nPlacement, volumes and deployment metadata\nOperator-provided configuration and schemas",
+    "OLM applies user choices through operator configuration.",
+    "7 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s07.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 7: User control of extension deployments\u000bSPEAKER: OLM B — lifecycle primitives; name to confirm\u000bSTART: 07:30\u000bDURATION: 01:30\u000bSTATUS: IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE\u000b\u000bTAKEAWAY: Flexible user-defined deployment configuration.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bDescribe the deployment as a configuration exchange between users and the operator team. Users express environment, resource, placement, volume and metadata requirements through the package's configuration interface. Operator authors define schema and validation behavior. OLM carries the selected configuration into the deployment. DeploymentConfig is in active development and controlled by feature-gate; values are expressed through ClusterExtension configuration. Explain field-specific merge, replace and append behavior and annotation precedence. Validate example input and inspect the resulting deployment against the pinned source version. Watch-namespace pass-through leaves CRDs shared and supplies no watch-aware dependency management. Sources: supplied customization draft; ../kubecon-2026-resource-assessment.md; ../kubecon-2025-slide-context.md slide 14.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 9,
+   "objectId": "h17c27b4e15e0645b_3_141",
+   "text": [
+    "OLMv0 → OLMv1 migration",
+    "IN ACTIVE DEVELOPMENT",
+    "Move operator management from OLMv0 to OLMv1.",
+    "Prepare v1 catalogs from v0 CatalogSources\nCheck and preview operator migrations\nMigration library with example binaries",
+    "Structured output supports automation and models.",
+    "8 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s08.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 8: OLMv0 → OLMv1 migration\u000bSPEAKER: OLM B — lifecycle primitives; name to confirm\u000bSTART: 09:00\u000bDURATION: 02:00\u000bSTATUS: IN ACTIVE DEVELOPMENT\u000b\u000bTAKEAWAY: Move operator management from OLMv0 to OLMv1.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bPrepare OLMv1 ClusterCatalogs from the existing OLMv0 CatalogSources first. Then evaluate each operator installation for eligibility and preview its migration before transferring management. The check and preview actions evaluate operators; catalog preparation is the earlier prerequisite. The migration specification describes check, convert, rollback and cleanup with ClusterObjectSets. Functionality is supplied as library-olm. The example binaries illustrate library use. The user confirms structured output that supports automated processing, including models; it has not been independently exercised in this editing task. Eligibility checks have defined coverage. Retaining the namespace can reduce disruption; namespace changes may restart workloads or cause downtime. Validate recovery boundaries and source/gate versions for the selected case. This area is in active development. Sources: library-olm README/spec; ../kubecon-2026-resource-assessment.md; user migration guidance.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip\u000b\nNote: Ask Todd to make a separate repo for the binaries (naming is hard :))"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 10,
+   "objectId": "h17c27b4e15e0645b_3_105",
+   "text": [
+    "Install a bundle directly",
+    "IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE",
+    "Select a registry+v1 bundle by its OCI image reference.",
+    "Use sourceType: OCIImage\nSet source.ociImage.ref\nBypass catalog resolution",
+    "Proposed in open PR #2907; controlled by BoxcutterRuntime.",
+    "5 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s05.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 5: Install a bundle directly\u000bSPEAKER: OLM B — lifecycle primitives; name to confirm\u000bSTART: 04:00\u000bDURATION: 01:30\u000bSTATUS: IN ACTIVE DEVELOPMENT / CONTROLLED BY FEATURE-GATE\u000b\u000bTAKEAWAY: Select a registry+v1 bundle by its OCI image reference.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bPR #2907 is OPEN and unmerged as of the supplied check dated 2026-10-09. Present direct bundle installation as proposed behavior in active development. It supports registry+v1 bundles only and is controlled by the BoxcutterRuntime feature gate. The requested source uses sourceType: OCIImage and source.ociImage.ref. It bypasses catalog resolution. Describe CRD checks and other lifecycle safeguards according to the proposal's supported path; catalog bypass alone establishes no blanket removal of CRD safety. Pin the source revision and gate configuration before preparing an example. The session uses prepared examples without a live demo.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 11,
+   "objectId": "h17c27b4e15e0645b_3_165",
+   "text": [
+    "Planned Helm content support",
+    "PLANNED / helm+v2",
+    "The rendering contract targets deterministic chart behavior.",
+    "Chart and values produce managed manifests\nAllow-listed features support reproducible rendering\nhelm+v2 identifies the content representation",
+    "Standard chart artifacts use a defined rendering contract.",
+    "10 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s10.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 10: Planned Helm content support\u000bSPEAKER: OLM C — content/catalogs/contributions; name to confirm\u000bSTART: 12:00\u000bDURATION: 02:00\u000bSTATUS: PLANNED / helm+v2\u000b\u000bTAKEAWAY: The rendering contract targets deterministic chart behavior.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bhelm+v2 is the user-confirmed canonical discriminator for versioned OLM Helm packaging/catalog content. Standard chart OCI identity is used, with rendered manifests managed through OLM lifecycle behavior. User values are parsed and validated during rendering. Deterministic rendering is the design goal: features are allow-listed to exclude non-deterministic functionality, with compatibility fixtures required to validate the supported subset. Dependencies are vendored. Hooks and keep behavior are unsupported in the proposal. CRDs use templates/; crds/ is unsupported. Chart release-object mappings and restricted template functions require compatibility testing. Moving CRDs affects upgrade, deletion and data handling. Implementation of proposed gates remains independently unconfirmed. Native chart OCI identity and future OCI catalog storage are separate scopes. Sources: supplied Helm planning brief and feature-planning context.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 12,
+   "objectId": "h17c27b4e15e0645b_3_177",
+   "text": [
+    "Catalog performance and content types",
+    "PLANNED / FUTURE WORK",
+    "Design for lower catalog-processing cost and additional content types.",
+    "Lower duplicated CSV metadata\nDirect version fields reduce property traversal\nTyped registry+v1 and helm+v2 content",
+    "File-based catalogs remain the established foundation.",
+    "11 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s11.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 11: Catalog performance and content types\u000bSPEAKER: OLM C — content/catalogs/contributions; name to confirm\u000bSTART: 14:00\u000bDURATION: 01:30\u000bSTATUS: PLANNED / FUTURE WORK\u000b\u000bTAKEAWAY: Design for lower catalog-processing cost and additional content types.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bCredit established FBC capabilities: plaintext editing, composition, extensibility, package-level metadata and version/release properties already exist. The v2 work refines the representation and consumers: less duplicated CSV metadata, version/release fields available directly rather than via property traversal, and explicit mediaType dispatch for installable formats including Helm. Arbitrary FBC schema extensibility alone does not supply end-to-end installation support for a new content type. Catalog processing efficiency is a design benefit to validate, with no measured speedup claimed. Show the practical resolution/metadata work the new representation is intended to reduce. The user-confirmed near-term focus is flexible OLMv1 schemas; OCI-native catalog storage, transport and selective fetching are future work. Channels and legacy graphs are excluded from v2; lifecycle/constraint metadata remains open. Sources: https://olm.operatorframework.io/docs/reference/file-based-catalogs/ ; supplied v2 catalog brief; feature-planning context.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 13,
+   "objectId": "h17c27b4e15e0645b_3_153",
+   "text": [
+    "Shared lifecycle logic in library-olm",
+    "IN ACTIVE DEVELOPMENT",
+    "Reuse lifecycle logic through a library with explicit contracts.",
+    "Share migration checks and workflow logic\nExercise current development examples\nRecord expected results in reusable fixtures",
+    "Examples and fixtures make supported behavior concrete.",
+    "9 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s09.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 9: Shared lifecycle logic in library-olm\u000bSPEAKER: OLM B — lifecycle primitives; name to confirm\u000bSTART: 11:00\u000bDURATION: 01:00\u000bSTATUS: IN ACTIVE DEVELOPMENT\u000b\u000bTAKEAWAY: Reuse lifecycle logic through a library with explicit contracts.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bDescribe library reuse, the current migration development examples and fixtures that record inputs and expected results. The example binaries exercise library behavior and provide contribution starting points. Broader controller, CLI and UI consumption remains a design intent requiring implementation evidence and explicit contracts. Successor semantics need a defined contract. Fixtures can cover legacy input or version/release selection while respecting the proposed v2 schema direction. Pin source versions when documenting examples. B hands off to C after this slide at 12:00. Sources: library-olm README/spec; supplied feature-planning context; ../kubecon-2025-slide-context.md slide 13.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 14,
+   "objectId": "h17c27b4e15e0645b_3_189",
+   "text": [
+    "Contribute to Operator Framework",
+    "PROJECT DEVELOPMENT",
+    "Help develop the project through documentation, code and test cases.",
+    "Improve documentation and examples\nContribute code and focused tests\nAdd migration, chart and schema fixtures",
+    "Start with a reproducible case and a clear expected result.",
+    "12 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s12.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 12: Contribute to Operator Framework\u000bSPEAKER: OLM C — content/catalogs/contributions; name to confirm\u000bSTART: 15:30\u000bDURATION: 01:00\u000bSTATUS: PROJECT DEVELOPMENT\u000b\u000bTAKEAWAY: Help develop the project through documentation, code and test cases.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bMake an explicit project-development ask: contribute documentation, code, tests and fixtures to Operator Framework. Explain the distinction from submitting operator versions or upgrade graphs to a catalog; those submissions serve a separate publishing workflow. Useful development cases include rollout/configuration edge cases, migration eligibility, chart/values compatibility and schema behavior. Each contribution should identify the repository, issue or discussion, reproducible input and expected result. Maintainers still need to vet concrete task links and destinations. Companion examples are intended for online use; this session has no live demos. Sources: supplied feature-planning context; ../kubecon-2025-slide-context.md slide 15.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip\u000b\nRewrite this completely, with refs to CONTRIBUTING.md and a pretty QR code."
+   ],
+   "skipped": false
+  },
+  {
+   "number": 15,
+   "objectId": "h17c27b4e15e0645b_3_201",
+   "text": [
+    "Operator Framework: Java Operator SDK",
+    "13 / 25"
+   ],
+   "images": [],
+   "notes": [
+    "SLIDE 13: Operator Framework: Java Operator SDK\u000bSPEAKER: OLM C — content/catalogs/contributions; name to confirm\u000bSTART: 16:30\u000bDURATION: 00:30\u000bSTATUS: \u000b\u000bTAKEAWAY: \u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bC hands off to Attila for Java Operator SDK. OLM packaging is language-neutral, and SDKs support controller implementation and reconciliation. Keep bundle metadata and the runnable controller image distinct in the spoken transition. The primary builder imports original SDK source slides 3–12 unchanged immediately after this divider. Each original SDK slide receives 60 seconds, for ten minutes total on final slides 14–23. Attila covers this segment exclusively.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 16,
+   "objectId": "h17c27b4e15e0645b_3_207",
+   "text": [
+    "Read-Cache-After-Write Consistency",
+    "since v5.3\nAPI:  \nUpdateControl.patchStatus(resource)\ncontext.resourceOperations().serverSideApply(resource);\nAdditional cache brings complexity:\nIndexers\nItems store\nComparable Resource Versions KEP\nRead-cache-after-write consistency blog"
+   ],
+   "images": [],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide3; duration=60 seconds; start=17:00; end=18:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 17,
+   "objectId": "h17c27b4e15e0645b_3_212",
+   "text": [
+    "Read-Cache-After-Write Consistency"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": ""
+    }
+   ],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide4; duration=60 seconds; start=18:00; end=19:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 18,
+   "objectId": "h17c27b4e15e0645b_3_217",
+   "text": [
+    "Event Filtering - API & Challenges",
+    "Filter out events for our own updates\nChallenges\nInformer lost event problem\nOur update did not change the resource but other actor did concurrently\n context.resourceOperations().serverSideApply(resource);"
+   ],
+   "images": [],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide5; duration=60 seconds; start=19:00; end=20:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 19,
+   "objectId": "h17c27b4e15e0645b_3_222",
+   "text": [
+    "Event Filtering",
+    "for Read-Cache-After-Write-Consistency"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": ""
+    }
+   ],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide6; duration=60 seconds; start=20:00; end=21:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 20,
+   "objectId": "h17c27b4e15e0645b_3_228",
+   "text": [
+    "Informer Pools",
+    "Sharing underlying informers between controller\nMatches the informer configuration\nExcept list limit \nDetails in InformerClassifier\nSupports dynamic Informer registration and de-registration"
+   ],
+   "images": [],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide7; duration=60 seconds; start=21:00; end=22:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 21,
+   "objectId": "h17c27b4e15e0645b_3_233",
+   "text": [
+    "Informer Pools"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": ""
+    }
+   ],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide8; duration=60 seconds; start=22:00; end=23:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 22,
+   "objectId": "h17c27b4e15e0645b_3_238",
+   "text": [
+    "Observability stack enhancements",
+    "Facelift over Observability stack\nImproved logging and Mapped Diagnostic Context (MDC)\nPutting event and primary resource to MDC if available\nMetrics API refined\nMicrometerMetricsV2\nGeneric Grafana Dashboard\nSample with OTel + Prometheus + Grafana"
+   ],
+   "images": [],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide9; duration=60 seconds; start=23:00; end=24:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 23,
+   "objectId": "h17c27b4e15e0645b_3_243",
+   "text": [
+    "Java Virtual Threads (WIP)",
+    "Planned for v5.7.0\nWe will officially support this for Java 25+ (but will work with Java 21+)\nReplacing ThreadPools with virtual threads across framework\nVirtually unlimited number of concurrent reconciliation\nThe explicit limit applies though"
+   ],
+   "images": [],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide10; duration=60 seconds; start=24:00; end=25:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 24,
+   "objectId": "h17c27b4e15e0645b_3_248",
+   "text": [
+    "Java Virtual Threads (WIP)"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": ""
+    }
+   ],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide11; duration=60 seconds; start=25:00; end=26:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 25,
+   "objectId": "h17c27b4e15e0645b_3_253",
+   "text": [
+    "Some honorable mentions…",
+    "EventRecorder API\nShardSelector support\nDocumentation improvements - operations section"
+   ],
+   "images": [],
+   "notes": [
+    "[SDK import: speaker=Attila; section=SDK; sourceSlide12; duration=60 seconds; start=26:00; end=27:00]"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 26,
+   "objectId": "h17c27b4e15e0645b_3_258",
+   "text": [
+    "Resources and contribution steps",
+    "RESOURCE PACKAGE TO PREPARE",
+    "Use documented contracts and reproducible cases to guide contributions.",
+    "Check content against a documented contract\nShare a reproducible case or fixture\nSelect a maintainer-scoped contribution",
+    "Companion examples and task links are being prepared.",
+    "24 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s19.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 24: Resources and contribution steps\u000bSPEAKER: OLM A — session host; name to confirm\u000bSTART: 27:00\u000bDURATION: 01:00\u000bSTATUS: RESOURCE PACKAGE TO PREPARE\u000b\u000bTAKEAWAY: Use documented contracts and reproducible cases to guide contributions.\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bThe host closes on final slide 24, represented here by base record 14. Include verified resource routes for Operator Framework and Java Operator SDK in the final resource hub. Public URLs and QR codes need published destinations. Companion examples and vetted first-task links remain to be prepared. Give the audience a practical next-day contribution supported by the resource package. Speaker ownership stays in these notes. Sources: ../kubecon-2026-outline.md companion package; supplied feature-planning contribution candidates.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  },
+  {
+   "number": 27,
+   "objectId": "h17c27b4e15e0645b_3_270",
+   "text": [
+    "Questions?",
+    "Questions about lifecycle APIs, packaging or controller behavior?",
+    "OLM configuration and migration\nHelm content and catalog schemas\nJava Operator SDK reconciliation",
+    "Discussion of capabilities and proposed work.",
+    "25 / 25"
+   ],
+   "images": [
+    {
+     "title": "",
+     "description": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/theme/assets/s20.png"
+    }
+   ],
+   "notes": [
+    "SLIDE 25: Questions?\u000bSPEAKER: OLM A/B/C on OLM; Attila on Java SDK only\u000bSTART: 28:00\u000bDURATION: 02:00\u000bSTATUS: \u000b\u000bTAKEAWAY: Questions about lifecycle APIs, packaging or controller behavior?\u000b\u000bTALK TRACK / SOURCES / CAVEATS / REVIEW:\u000bFinal slide 25 is titled exactly Questions?. Base record 15 reserves two minutes for questions and transition overruns. A/B/C answer their OLM topics; Attila answers Java Operator SDK questions exclusively. The base segment totals 20 minutes, including this question allocation. Original SDK source slides 3–12 add ten minutes for a 30-minute session. Main slides occupy 28 minutes including the one-minute host close. Keep the no-live-demo plan. Source: ../kubecon-2026-outline.md run of show.\u000b\u000bSOURCE CONTEXT ROOT: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip"
+   ],
+   "skipped": false
+  }
+ ]
+}

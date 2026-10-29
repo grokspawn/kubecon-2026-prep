@@ -32,6 +32,9 @@ PRES_RELS = "ppt/_rels/presentation.xml.rels"
 PREFIX = "sdk/"
 CANVAS = (9144000, 5143500)
 NUMBERS = tuple(range(3, 13))
+BASE_SLIDES = 17
+INSERT_AFTER = 15
+TOTAL_SLIDES = BASE_SLIDES + len(NUMBERS)
 
 
 def require(condition, message):
@@ -153,7 +156,7 @@ def notes_for(parts, slide):
     return found[0]
 
 
-def inspect_source(parts, path):
+def inspect_source(parts, path, start_seconds):
     slides = displayed(parts)
     require(len(slides) == 13, "SDK source must have 13 displayed slides")
     require(canvas(parts) == CANVAS, "SDK canvas must be 9144000 x 5143500")
@@ -176,7 +179,7 @@ def inspect_source(parts, path):
                 "Source display order differs from requested slide filenames")
         notes = notes_for(parts, slide)
         require(notes in parts, "Missing source notes: " + notes)
-        start = 17 * 60 + index * 60
+        start = start_seconds + index * 60
         end = start + 60
         mapping.append({
             "source_slide": number, "source_part": slide,
@@ -194,7 +197,7 @@ def inspect_source(parts, path):
         "status": "source_checked_pending_base", "source": str(path),
         "source_sha256": digest(path.read_bytes()),
         "source_displayed_slides": len(slides), "canvas": list(CANVAS),
-        "expected_displayed_slides": 25, "displayed_slides": None,
+        "expected_displayed_slides": TOTAL_SLIDES, "displayed_slides": None,
         "source_mapping": mapping,
         "media": [{"source_part": n, "imported_part": PREFIX + n,
                    "source_sha256": digest(data)} for n, data in sorted(parts.items())
@@ -250,8 +253,8 @@ def merge_types(base, source):
 
 def merge(base, source, report, insert_after):
     slides = displayed(base)
-    require(len(slides) == 15, "Base must have 15 displayed slides")
-    require(insert_after == 13, "This SDK import requires --insert-after 13")
+    require(len(slides) == BASE_SLIDES, f"Base must have {BASE_SLIDES} displayed slides")
+    require(insert_after == INSERT_AFTER, f"This SDK import requires --insert-after {INSERT_AFTER}")
     require(canvas(base) == CANVAS, "Base/source canvas mismatch")
     require(not any(n.startswith(PREFIX) for n in base), "Base already contains sdk/ parts")
     validate_relationships(base)
@@ -309,16 +312,16 @@ def merge(base, source, report, insert_after):
         app = xml(output["docProps/app.xml"])
         for node in app:
             if node.tag.endswith("}Slides"):
-                node.text = "25"
+                node.text = str(TOTAL_SLIDES)
         output["docProps/app.xml"] = serialize(app, base["docProps/app.xml"])
     return output
 
 
-def verify(output, base, source, report):
+def verify(output, base, source, report, insert_after):
     order = displayed(output)
-    expected = displayed(base)[:13] + [e["imported_part"] for e in report["source_mapping"]]
-    expected += displayed(base)[13:]
-    require(order == expected and len(order) == 25, "Displayed slide order/count mismatch")
+    expected = displayed(base)[:insert_after] + [e["imported_part"] for e in report["source_mapping"]]
+    expected += displayed(base)[insert_after:]
+    require(order == expected and len(order) == TOTAL_SLIDES, "Displayed slide order/count mismatch")
     validate_relationships(output)
     changed_notes = {e["notes_part"] for e in report["source_mapping"]}
     for name, data in source.items():
@@ -348,23 +351,28 @@ def verify(output, base, source, report):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base", type=Path, help="15-slide base (required for import)")
+    parser.add_argument("--base", type=Path, help="17-slide base (required for import)")
     parser.add_argument("--source", type=Path, required=True)
-    parser.add_argument("--out", type=Path, help="Merged 25-slide PPTX (required for import)")
-    parser.add_argument("--insert-after", type=int, default=13)
+    parser.add_argument("--out", type=Path, help="Merged 27-slide PPTX (required for import)")
+    parser.add_argument("--insert-after", type=int, default=INSERT_AFTER)
+    parser.add_argument("--start-seconds", type=int, help="SDK segment start in seconds (required for import)")
     parser.add_argument("--self-check", action="store_true", help="Check source without a base")
     parser.add_argument("--report", type=Path,
                         default=Path(__file__).resolve().with_name("import-report.json"))
     args = parser.parse_args()
     if not args.self_check and (args.base is None or args.out is None):
         parser.error("--base and --out are required unless --self-check is used")
+    if not args.self_check and args.start_seconds is None:
+        parser.error("--start-seconds is required for import")
+    if args.start_seconds is not None and args.start_seconds < 0:
+        parser.error("--start-seconds must be nonnegative")
     protected = {args.source.resolve(), Path(__file__).resolve()}
     if args.base:
         protected.add(args.base.resolve())
     require(args.report.resolve() not in protected, "Report would overwrite an input/helper")
     require(args.report.parent.is_dir(), "Report parent directory does not exist")
     source = package(args.source)
-    report = inspect_source(source, args.source)
+    report = inspect_source(source, args.source, args.start_seconds or 0)
     for index, entry in enumerate(report["source_mapping"]):
         entry["planned_output_slide"] = args.insert_after + index + 1
         # Exercise notes editing in memory during the source-only check too.
@@ -376,7 +384,7 @@ def main():
         root = xml(source[PRES])
         ids = root.find("{" + P + "}sldIdLst")
         next_id = max(int(node.get("id")) for node in ids) + 1
-        for index in range(2):
+        for index in range(BASE_SLIDES - len(ids)):
             node = copy.deepcopy(ids[index])
             node.set("id", str(next_id + index))
             ids.append(node)
@@ -390,9 +398,9 @@ def main():
         buffer.seek(0)
         with zipfile.ZipFile(buffer) as archive:
             verify({n: archive.read(n) for n in archive.namelist()},
-                   fixture, source, trial_report)
+                   fixture, source, trial_report, args.insert_after)
         report["synthetic_merge_check"] = {
-            "passed": True, "displayed_slides": 25,
+            "passed": True, "displayed_slides": TOTAL_SLIDES,
             "slide_xml_byte_identical": True, "media_byte_identical": True,
             "package_relationships_valid": True,
             "registered_sdk_masters": trial_report["registered_sdk_masters"],
@@ -404,11 +412,11 @@ def main():
         require(args.out.parent.is_dir(), "Output parent directory does not exist")
         base = package(args.base)
         output = merge(base, source, report, args.insert_after)
-        verify(output, base, source, report)
+        verify(output, base, source, report, args.insert_after)
         with zipfile.ZipFile(args.out, "w", compression=zipfile.ZIP_DEFLATED) as archive:
             for name, data in output.items():
                 archive.writestr(name, data)
-        verify(package(args.out), base, source, report)
+        verify(package(args.out), base, source, report, args.insert_after)
         require(digest(args.source.read_bytes()) == report["source_sha256"],
                 "Source file changed during import")
         report.update({"status": "import_verified", "base": str(args.base),
@@ -418,7 +426,7 @@ def main():
     report["verification"]["source_file_unchanged"] = True
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": report["status"], "displayed_slides": report["displayed_slides"],
-                      "expected_displayed_slides": 25, "report": str(args.report)}))
+                       "expected_displayed_slides": TOTAL_SLIDES, "report": str(args.report)}))
 
 
 if __name__ == "__main__":

@@ -21,6 +21,12 @@ chromium.launch = options => {
 const html2pptx = require('/Users/jordan/.claude/skills/Utilities/Documents/Pptx/Scripts/html2pptx.js');
 const data = require('./slide-data.json');
 const TITLE = 'The Next Era of Kubernetes Operator Lifecycle Management';
+const BASE_SLIDES = 17;
+const SDK_SLIDES = 10;
+const SDK_INSERT_AFTER = 15;
+const SDK_SECONDS = 600;
+const TOTAL_SLIDES = BASE_SLIDES + SDK_SLIDES;
+const BASE_SECONDS = 1320;
 
 const esc = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const clock = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
@@ -36,17 +42,34 @@ function checkCopy() {
   }
 }
 
-function slideHtml(item, index, start, variant, theme) {
+function outputNumber(index) {
+  return index + 1 + (index >= SDK_INSERT_AFTER ? SDK_SLIDES : 0);
+}
+
+function slideHtml(item, index, variant, theme, imageSize) {
   const final = variant === 'final';
-  const image = pathToFileURL(path.join(final ? theme.assetsDir : path.join(root, 'assets'), item.image || `s${String(index + 1).padStart(2, '0')}.png`)).href;
+  const imageFile = item.imagePath
+    ? (path.isAbsolute(item.imagePath) ? item.imagePath : path.join(root, '..', item.imagePath))
+    : path.join(final ? theme.assetsDir : path.join(root, 'assets'), item.image || `s${String(index + 1).padStart(2, '0')}.png`);
+  const image = pathToFileURL(imageFile).href;
   const proposal = /DEVELOPMENT|FEATURE.GATE|PLANNED|REVIEW|FUTURE|PREPARE/.test(item.status);
-  const outputNumber = index < 13 ? index + 1 : index + 11;
+  const number = outputNumber(index);
   const bg = final ? `#${theme.background}` : '#F5F7FA';
   const ink = final ? `#${theme.titleColor}` : '#14263D';
   const body = final ? `#${theme.bodyColor}` : '#34495E';
   const font = final ? theme.font : 'Arial';
-  const footer = final ? `${outputNumber} / 25` : `${outputNumber} / 25 | KUBECON NA 2026 | DRY RUN`;
+  const footer = final ? `${number} / ${TOTAL_SLIDES}` : `${number} / ${TOTAL_SLIDES} | KUBECON NA 2026 | DRY RUN`;
   const footerCss = final ? 'left:650pt;width:42pt;text-align:right' : 'left:28pt;width:664pt';
+  // Explicit images may have different aspect ratios (notably the square QR).
+  // Fit them within the existing figure area without stretching their pixels.
+  let imageCss = '';
+  if (imageSize) {
+    const box = final ? { x: 338, y: 115, w: 354, h: 236 } : { x: 312, y: 128, w: 380, h: 253.333 };
+    const qr = /(?:^|[-_/])qr(?:[-_.]|$)/i.test(item.imagePath);
+    const scale = Math.min((qr ? Math.min(box.w, 160) : box.w) / imageSize.width, (qr ? Math.min(box.h, 160) : box.h) / imageSize.height);
+    const w = imageSize.width * scale, h = imageSize.height * scale;
+    imageCss = `.figure{left:${box.x + (box.w - w) / 2}pt;top:${box.y + (box.h - h) / 2}pt;width:${w}pt;height:${h}pt}`;
+  }
   if (item.team) return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
   html{background:${bg}}body{width:720pt;height:405pt;margin:0;display:flex;position:relative;background:${bg};font-family:${font};color:${ink}}
   h1{position:absolute;left:28pt;top:35pt;font-size:28pt;margin:0} .names{position:absolute;left:35pt;top:166pt;display:flex;gap:22pt}
@@ -80,10 +103,12 @@ function slideHtml(item, index, start, variant, theme) {
   .cover h1{top:42pt;height:82pt;font-size:30pt;line-height:1.11}
   .cover .badge{top:133pt}.cover .copy{top:174pt}.cover .figure{left:352pt;top:140pt;width:337.5pt;height:225pt}
   ${final ? `html,body{background:${bg};font-family:${font};color:${ink}}.stripe,.eyebrow{display:none}h1{left:${theme.titleBoundsPt.x}pt;top:${theme.titleBoundsPt.y}pt;font-size:${theme.titleFontSizePt}pt;color:${ink}}.badge{top:87pt;background:#E3F6FF;border-radius:0}.badge p{color:${ink}}.copy{top:120pt;width:286pt}.lead{font-size:18.5pt;line-height:1.1;color:${body}}ul{font-size:16pt;line-height:1.13;color:${body}}.figure{left:338pt;top:115pt;width:354pt;height:236pt}.caption{left:155pt;top:371pt;width:480pt;height:24pt;font-size:10.5pt;color:${body}}.footer{${footerCss};color:${body}}` : ''}
+  ${item.imagePath?.includes('namespace-management') ? '.lead{font-size:16pt;line-height:1.12;margin-bottom:14pt}' : ''}
+  ${imageCss}
   </style></head><body class="${index === 0 ? 'cover' : ''}"><div class="stripe"></div><p class="eyebrow">${esc(item.section)}</p><h1>${esc(item.title)}</h1>
-  ${item.status ? `<div class="badge"><p>${esc(item.status)}</p></div>` : ''}<div class="copy"><p class="lead">${esc(item.lead)}</p><ul>${item.bullets.map(text => `<li>${esc(text)}</li>`).join('')}</ul></div>
+  ${item.status ? `<div class="badge"><p>${esc(item.status)}</p></div>` : ''}<div class="copy"><p class="lead">${esc(item.lead).replace(/\n/g, '<br>')}</p><ul>${item.bullets.map(text => `<li>${esc(text)}</li>`).join('')}</ul></div>
   <img class="figure" src="${image}" alt="Conceptual illustration for ${esc(item.title)}">
-  <p class="caption">${esc(item.caption)}</p><p class="footer">${esc(footer)}</p></body></html>`;
+  ${item.captionUrl ? '' : `<p class="caption">${esc(item.caption)}</p>`}<p class="footer">${esc(footer)}</p></body></html>`;
 }
 
 async function buildVariant(variant) {
@@ -92,7 +117,9 @@ async function buildVariant(variant) {
   const outputDir = final ? path.join(root, '..', 'final') : root;
   const theme = final ? JSON.parse(await fs.readFile(path.join(root, 'theme', 'theme.json'), 'utf8')) : null;
   const total = data.reduce((sum, slide) => sum + slide.duration, 0);
-  if (data.length !== 15 || total !== 1200) throw new Error('Base count/timing mismatch.');
+  if (data.length !== BASE_SLIDES || total !== BASE_SECONDS) throw new Error('Base count/timing mismatch.');
+  if (!data[SDK_INSERT_AFTER - 1].divider) throw new Error('SDK divider must precede the imported segment.');
+  const sdkStart = data.slice(0, SDK_INSERT_AFTER).reduce((sum, slide) => sum + slide.duration, 0);
   const htmlDir = path.join(outputDir, 'html');
   const scratch = path.join(outputDir, 'cache', 'html2pptx');
   const preview = path.join(outputDir, 'preview');
@@ -110,17 +137,30 @@ async function buildVariant(variant) {
   const manifest = [];
   const notesEntries = [];
   for (const [index, item] of data.entries()) {
-    if (index === 13) elapsed += 600;
-    const number = index < 13 ? index + 1 : index + 11;
+    if (index === SDK_INSERT_AFTER) elapsed += SDK_SECONDS;
+    const number = outputNumber(index);
+    const imagePath = item.imagePath && (path.isAbsolute(item.imagePath) ? item.imagePath : path.join(root, '..', item.imagePath));
+    const imageSize = imagePath ? await sharp(imagePath).metadata() : null;
     const filename = path.join(htmlDir, `slide-${String(index + 1).padStart(2, '0')}.html`);
-    await fs.writeFile(filename, slideHtml(item, index, elapsed, variant, theme));
+    await fs.writeFile(filename, slideHtml(item, index, variant, theme, imageSize));
     const { slide } = await html2pptx(filename, pptx, { tmpDir: scratch });
+    if (item.captionUrl) {
+      // Keep the current Google deck's contribution-guide link clickable.
+      const captionBox = final ? { x: 155, y: 371, w: 480, h: 24, fontSize: 10.5 }
+        : { x: 28, y: 351, w: 267, h: 31, fontSize: 11.5 };
+      slide.addText(item.caption, {
+        x: captionBox.x / 72, y: captionBox.y / 72, w: captionBox.w / 72, h: captionBox.h / 72,
+        fontFace: final ? theme.font : 'Arial', fontSize: captionBox.fontSize,
+        color: final ? theme.bodyColor : '007F86', italic: true, margin: 0,
+        hyperlink: { url: item.captionUrl },
+      });
+    }
     const noteText = `SLIDE ${number}: ${item.title}\nSPEAKER: ${item.speaker}\nSTART: ${clock(elapsed)}\nDURATION: ${clock(item.duration)}\nSTATUS: ${item.status}\n\nTAKEAWAY: ${item.lead}\n\nTALK TRACK / SOURCES / CAVEATS / REVIEW:\n${item.notes}\n\nSOURCE CONTEXT ROOT: ${path.dirname(root)}\n`;
     slide.addNotes(noteText);
     notesEntries.push({ number, text: `## ${number}. ${item.title}\n\n**Speaker:** ${item.speaker}  \n**Start:** ${clock(elapsed)} · **Duration:** ${clock(item.duration)} · **Status:** ${item.status}\n\n${item.lead}\n\n${item.bullets.map(text => `- ${text}`).join('\n')}\n\n${item.notes}\n\n` });
     manifest.push({ number, kind: 'generated', baseIndex: index, speaker: item.speaker, title: item.title, duration: item.duration, start: elapsed });
     elapsed += item.duration;
-    console.log(`Built base ${index + 1}/15 (output ${number}): ${item.title}`);
+    console.log(`Built base ${index + 1}/${BASE_SLIDES} (output ${number}): ${item.title}`);
   }
   const stem = final ? 'kubecon-2026-final' : 'kubecon-2026-dry-run';
   const pptxPath = path.join(outputDir, `${stem}.pptx`);
@@ -128,20 +168,22 @@ async function buildVariant(variant) {
   const reportPath = path.join(outputDir, 'import-report.json');
   await pptx.writeFile({ fileName: basePath });
   console.log(execFileSync('python3', [path.join(root, 'import-sdk.py'), '--base', basePath,
-    '--source', '/Users/jordan/Downloads/Copy of KubeCon2026.pptx', '--out', pptxPath, '--insert-after', '13', '--report', reportPath], { encoding: 'utf8', timeout: 30000 }));
+    '--source', '/Users/jordan/Downloads/Copy of KubeCon2026.pptx', '--out', pptxPath, '--insert-after', String(SDK_INSERT_AFTER), '--start-seconds', String(sdkStart), '--report', reportPath], { encoding: 'utf8', timeout: 30000 }));
   if (final) console.log(execFileSync('python3', [path.join(root, 'theme', 'apply-theme.py'), '--pptx', pptxPath, '--profile', path.join(root, 'theme', 'theme.json')], { encoding: 'utf8', timeout: 30000 }));
   const imported = JSON.parse(await fs.readFile(reportPath, 'utf8'));
+  if (imported.source_mapping.length !== SDK_SLIDES) throw new Error('SDK slide count mismatch.');
   for (const source of imported.source_mapping) {
     const number = source.output_slide;
-    const sdkTitle = source.source_visible_text.find(text => text.trim()) || `SDK source slide ${source.source_slide}`;
-    manifest.push({ number, kind: 'authored-sdk', sourceSlide: source.source_slide, part: source.imported_part, title: sdkTitle, speaker: 'Attila', duration: 60, start: 1020 + (number - 14) * 60 });
+    const sdkTitle = source.source_visible_text.find(text => text.trim())?.trim() || `SDK source slide ${source.source_slide}`;
+    const sdkDuration = SDK_SECONDS / SDK_SLIDES;
+    manifest.push({ number, kind: 'authored-sdk', sourceSlide: source.source_slide, part: source.imported_part, title: sdkTitle, speaker: 'Attila', duration: sdkDuration, start: sdkStart + (number - SDK_INSERT_AFTER - 1) * sdkDuration });
     notesEntries.push({ number, text: `## ${number}. SDK source slide ${source.source_slide}\n\n**Speaker:** Attila\n\n**Start:** ${source.start} · **Duration:** 01:00\n\nOriginal authored slide XML and illustrations retained. SDK wording and release/version claims remain the author's source content. This import adds assignment/timing notes only.\n\nSource: ~/Downloads/Copy of KubeCon2026.pptx, slide ${source.source_slide}.\n\n${source.source_visible_text.join(' ')}\n\n` });
   }
   manifest.sort((a, b) => a.number - b.number);
   notesEntries.sort((a, b) => a.number - b.number);
-  if (elapsed !== 1800 || manifest.length !== 25) throw new Error('Combined count/timing mismatch.');
+  if (elapsed !== BASE_SECONDS + SDK_SECONDS || manifest.length !== TOTAL_SLIDES || notesEntries.length !== TOTAL_SLIDES || manifest.some((entry, index) => entry.number !== index + 1)) throw new Error('Combined count/timing mismatch.');
   await fs.writeFile(path.join(outputDir, 'deck-manifest.json'), JSON.stringify(manifest, null, 2));
-  await fs.writeFile(path.join(outputDir, 'speaker-notes.md'), `# ${TITLE}\n\n## Speaker notes\n\nOLM presenters: Rashmi, Joe and Jordan; A/B/C topic assignments remain to confirm. Attila presents original SDK source slides 3–12, preserved as authored. Twenty-five displayed slides total thirty proposed minutes including buffer.\n\n` + notesEntries.map(entry => entry.text).join(''));
+  await fs.writeFile(path.join(outputDir, 'speaker-notes.md'), `# ${TITLE}\n\n## Speaker notes\n\nOLM presenters: Rashmi, Joe and Jordan; A/B/C topic assignments remain to confirm. Attila presents original SDK source slides 3–12, preserved as authored. ${TOTAL_SLIDES} displayed slides total ${clock(elapsed)} including questions and buffer.\n\n` + notesEntries.map(entry => entry.text).join(''));
   console.log(execFileSync('/Applications/LibreOffice.app/Contents/MacOS/soffice', [
     `-env:UserInstallation=${pathToFileURL(path.join(outputDir, 'lo-profile')).href}`,
     '--headless', '--convert-to', 'pdf', '--outdir', outputDir, pptxPath,
@@ -149,8 +191,8 @@ async function buildVariant(variant) {
   const pdfPath = path.join(outputDir, `${stem}.pdf`);
   execFileSync('/opt/homebrew/bin/pdftoppm', ['-scale-to', '1600', '-png', pdfPath, path.join(preview, 'slide')], { timeout: 90000 });
   const images = (await fs.readdir(preview)).filter(name => /^slide-\d+\.png$/.test(name)).sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]));
-  if (images.length !== 25) throw new Error(`Expected25 rendered slides, got ${images.length}.`);
-  for (let sheet = 0; sheet < 3; sheet++) {
+  if (images.length !== TOTAL_SLIDES) throw new Error(`Expected ${TOTAL_SLIDES} rendered slides, got ${images.length}.`);
+  for (let sheet = 0; sheet < Math.ceil(images.length / 10); sheet++) {
     const tiles = await Promise.all(images.slice(sheet * 10, sheet * 10 + 10).map(async (name, index) => ({
       input: await sharp(path.join(preview, name)).resize(640, 360).png().toBuffer(),
       left: (index % 2) * 660 + 10, top: Math.floor(index / 2) * 380 + 10,
@@ -158,8 +200,8 @@ async function buildVariant(variant) {
     const height = Math.ceil(tiles.length / 2) * 380;
     await sharp({ create: { width: 1320, height, channels: 3, background: '#DDE5EA' } }).composite(tiles).png().toFile(path.join(outputDir, `contact-sheet-${sheet + 1}.png`));
   }
-  await fs.writeFile(path.join(outputDir, 'build-report.json'), JSON.stringify({ variant, slides: 25, totalSeconds: elapsed, notes: 25, rendering: 'LibreOffice PPTX→PDF; pdftoppm previews', editableText: true, sdkPreservation: imported.verification, pptx: pptxPath, pdf: pdfPath }, null, 2));
-  console.log(`${variant}: PPTX, PDF, notes and twenty-five rendered previews ready.`);
+  await fs.writeFile(path.join(outputDir, 'build-report.json'), JSON.stringify({ variant, slides: TOTAL_SLIDES, totalSeconds: elapsed, notes: notesEntries.length, rendering: 'LibreOffice PPTX→PDF; pdftoppm previews', editableText: true, sdkPreservation: imported.verification, pptx: pptxPath, pdf: pdfPath }, null, 2));
+  console.log(`${variant}: PPTX, PDF, notes and ${TOTAL_SLIDES} rendered previews ready.`);
 }
 
 async function main() {

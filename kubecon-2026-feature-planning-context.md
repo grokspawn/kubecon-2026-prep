@@ -1,5 +1,7 @@
 # KubeCon 2026 — catalog, Helm and evolution planning context
 
+> **Dated source assessment:** This October 9 record preserves the original briefs and their chronology. For the current Google deck, 32-minute allocation and later implementation evidence, see the [current outline](kubecon-2026-outline.md#current-google-deck--2026-10-28) and [demo status](demo-development-status.md). A development-branch demo does not establish released support.
+
 Assessed 2026-10-09. These sources establish **design intent and hypotheses**, not released support. Source documents remain unchanged; no proposal-linked repositories/documents were crawled and no implementation or performance tests were run.
 
 **User-confirmed decisions:** October 2 schema-first direction is current; OCI-native catalog storage is future work. Canonical Helm packaging/catalog representation is **`helm+v2`**. This labels the versioned packaging represented by OLM-compatible schemas, not the Helm CLI version. Older brief examples remain recorded as source history, not live ambiguity.

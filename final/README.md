@@ -1,16 +1,24 @@
 # The Next Era of Kubernetes Operator Lifecycle Management
 
-SDK-themed presentation copy. It uses the same adjusted content as the current review deck, with the SDK source layout, branding and source-derived typography/palette. Review markings are removed; feature availability labels and speaker notes are retained.
-
-The original SDK technical slides remain unchanged. Final visual styling does not establish additional feature availability or content approval.
+This SDK-themed presentation follows the current 27-slide Google deck and the
+proposed 32-minute schedule. It is rebuilt from local source, rather than
+exported directly from Google Slides. Speaker notes and availability labels
+are retained; the generated OLM slides have no review markings.
 
 ## Files
 
-- [PDF slides](kubecon-2026-final.pdf)
-- [Editable PowerPoint with speaker notes](kubecon-2026-final.pptx)
-- [Notes companion](speaker-notes.md)
-- [Overview 1–10](contact-sheet-1.png) · [11–20](contact-sheet-2.png) · [21–25](contact-sheet-3.png)
+- [PDF](kubecon-2026-final.pdf)
+- [PowerPoint with speaker notes](kubecon-2026-final.pptx)
+- [Speaker notes](speaker-notes.md)
+- Slide overviews: [1–10](contact-sheet-1.png), [11–20](contact-sheet-2.png),
+  [21–27](contact-sheet-3.png)
 
-Twenty-five slides; proposed timing remains30minutes. Source-derived Arial typography, navy headings, white backgrounds and inherited KubeCon/CNCF branding coordinate the generated OLM section with Attila's unchanged technical pages. Feature-gate, development and planned-work labels remain. Presenter names are Rashmi, Joe and Jordan on slide2; role assignments are recorded in notes.
+The ten original Java Operator SDK technical slides are retained with their
+authored text, slide XML, and media unchanged. The installation and namespace
+illustrations appear on slides 5–6; slide 14 contains the contribution-guide
+QR code. A/B/C assignments to the named OLM presenters remain to be confirmed.
 
-Build from `../dry-run/` with `node build-deck.js --final` or `--both`. Theme profile and generation helpers are under `../dry-run/theme/`. Validation is `python3 ../dry-run/validate-variants.py --variant final`.
+To rebuild, run `node build-deck.js --final` from `../dry-run/`. Run
+`python3 ../dry-run/validate-variants.py --variant final` to validate the
+result. See the [session handoff](../SESSION-HANDOFF.md) for current scope
+and source details.

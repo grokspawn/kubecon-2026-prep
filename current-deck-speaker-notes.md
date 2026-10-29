@@ -1,0 +1,217 @@
+# Current Google Slides: speaker notes
+
+32 minutes total. A/B/C assignments to named OLM speakers remain open.
+
+## 1. The Next Era of Kubernetes Operator Lifecycle Management
+
+SLIDE 1: The Next Era of Kubernetes Operator Lifecycle Management
+SPEAKER: OLM A — context and installation; name to confirm
+START: 00:00
+DURATION: 00:45
+
+TALK TRACK / SOURCES / CAVEATS:
+Welcome the audience and introduce the talk, The Next Era of Kubernetes Operator Lifecycle Management, at KubeCon + CloudNativeCon North America 2026. Retain the operator-lifecycle illustration. Source: ../kubecon-2026-outline.md.
+
+## 2. Presentation team
+
+SLIDE 2: Presentation team
+SPEAKER: OLM A — context and installation; name to confirm
+START: 00:45
+DURATION: 00:30
+
+TALK TRACK / SOURCES / CAVEATS:
+Introduce Rashmi, Joe and Jordan as the OLM presentation team. Introduce Attila as the fourth speaker, covering Java Operator SDK. The mapping from A/B/C to individual OLM presenters remains to be confirmed. Photos are deferred. The session uses prepared examples without live demos.
+
+## 3. Compatibility and lifecycle foundations
+
+SLIDE 3: Compatibility and lifecycle foundations
+SPEAKER: OLM A — context and installation; name to confirm
+START: 01:15
+DURATION: 01:30
+
+TALK TRACK / SOURCES / CAVEATS:
+Use OLMv0 evolution and compatibility with existing registry+v1 content as the historical basis. Explain how existing package formats, resource ownership and operational behavior shaped lifecycle implementation. Configuration and migration preparation build on that foundation. The bridge illustration is conceptual. This slide makes no measured availability, performance, adoption or elapsed-time claims. Sources: ../kubecon-2025-slide-context.md; ../kubecon-2026-resource-assessment.md; supplied evolution background.
+
+## 4. OLM: past, current and future
+
+SLIDE 4: OLM: past, current and future
+SPEAKER: OLM A — context and installation; name to confirm
+START: 02:45
+DURATION: 01:15
+
+TALK TRACK / SOURCES / CAVEATS:
+Enumerate the timeline: past work includes OLMv0, SQLite catalogs and established file-based catalogs (FBC). Summarize OLMv0's flawed assumptions about namespace-local CRD visibility, independently managed APIs and watch-aware dependencies. CRD definitions are cluster-scoped shared APIs; custom resource instances may be namespaced, and controller watch scope is configured separately. Shared CRDs can couple operator upgrades. The flawed assumptions belonged to OLMv0's lifecycle model; Kubernetes' cluster-scoped CRD design is the underlying API boundary. Keep the OperatorGroup recap brief and explain how these lessons informed OLMv1. Current OLMv1 capabilities include ClusterExtension, version pins and webhooks. Ongoing development includes resource rollouts, user configuration, direct bundle installation and migration. Direct installation remains an open proposal in PR #2907 at the supplied 2026-10-09 check. Planned work includes Helm content using helm+v2 and v2 catalog schemas. OCI-native catalog storage and transport remain future work. Release-specific availability and feature gates require the source-version qualifications on the detailed slides. The 2025 deck already listed delivered features. A continues with installation changes. Sources: ../kubecon-2025-slide-context.md slide 9; ../kubecon-2026-resource-assessment.md K-1/K-2/V0-2/V0-3; supplied feature-planning context.
+
+## 5. Streamlined Installation
+
+SLIDE 5: Streamlined Installation
+SPEAKER: OLM A — context and installation; name to confirm
+START: 04:00
+DURATION: 01:00
+
+TALK TRACK / SOURCES / CAVEATS:
+As of operator-controller v1.11.0, the standard installation channel no longer requires spec.serviceAccount. The controller uses its own service account; the deprecated field is ignored. ClusterExtension write access is a high-privilege operation because the controller uses cluster-admin permissions. When delegating access, combine Kubernetes RBAC with appropriate admission policy, such as ValidatingAdmissionPolicy, to constrain allowed extensions. Source: https://github.com/operator-framework/operator-controller/pull/2770 and the v1.11.0 release notes.
+
+## 6. Namespace Management
+
+SLIDE 6: Namespace Management
+SPEAKER: OLM A — context and installation; name to confirm
+START: 05:00
+DURATION: 01:00
+
+TALK TRACK / SOURCES / CAVEATS:
+Operator-controller v1.12.0 introduced optional spec.namespace in the experimental installation channel. With the feature-gated runtime, an explicitly supplied namespace remains user-managed. When the field is omitted, OLM derives and manages an install namespace using bundle metadata and defaults. Deleting the extension also deletes its managed namespace and all remaining objects in that namespace, including objects OLM did not install. Explain namespace-transition validation and verify the selected bundle and controller version before demonstrating. Sources: https://github.com/operator-framework/operator-controller/pull/2925, https://github.com/operator-framework/operator-controller/pull/2926, https://github.com/operator-framework/operator-controller/pull/2929.
+
+## 7. Inspect phased resource rollouts
+
+SLIDE 7: Inspect phased resource rollouts
+SPEAKER: OLM B — lifecycle primitives and migration; name to confirm
+START: 06:00
+DURATION: 02:00
+
+TALK TRACK / SOURCES / CAVEATS:
+Explain the ClusterExtension → ClusterObjectDeployment → ClusterObjectSet ownership model. ClusterObjectDeployment manages rollout and revision history; ClusterObjectSets hold immutable revisions with ordered phases. observedPhases and other status details help identify stalled objects. Objects within a phase have no defined ordering. The API and rollout behavior are in active development and controlled by feature-gate. Standalone ClusterObjectDeployment use is in active development. A namespace-scoped ObjectDeployment is under consideration, with no committed availability. Sources: https://github.com/operator-framework/operator-controller/pull/3058 and https://github.com/operator-framework/operator-controller/pull/3072.
+
+## 8. User control of extension deployments
+
+SLIDE 8: User control of extension deployments
+SPEAKER: OLM B — lifecycle primitives and migration; name to confirm
+START: 08:00
+DURATION: 01:30
+
+TALK TRACK / SOURCES / CAVEATS:
+Describe the deployment as a configuration exchange between users and the operator team. Users express environment, resource, placement, volume and metadata requirements through the package's configuration interface. Operator authors define schema and validation behavior. OLM carries the selected configuration into the deployment. DeploymentConfig is in active development and controlled by feature-gate; values are expressed through ClusterExtension configuration. Explain field-specific merge, replace and append behavior and annotation precedence. Validate example input and inspect the resulting deployment against the pinned source version. Watch-namespace pass-through leaves CRDs shared and supplies no watch-aware dependency management. Sources: supplied customization draft; ../kubecon-2026-resource-assessment.md; ../kubecon-2025-slide-context.md slide 14.
+
+## 9. OLMv0 → OLMv1 migration
+
+SLIDE 9: OLMv0 → OLMv1 migration
+SPEAKER: OLM B — lifecycle primitives and migration; name to confirm
+START: 09:30
+DURATION: 02:00
+
+TALK TRACK / SOURCES / CAVEATS:
+Prepare OLMv1 ClusterCatalogs from the existing OLMv0 CatalogSources first. Then evaluate each operator installation for eligibility and preview its migration before transferring management. The check and preview actions evaluate operators; catalog preparation is the earlier prerequisite. The migration specification describes check, convert, rollback and cleanup with ClusterObjectSets. Functionality is supplied as library-olm. The example binaries illustrate library use. The example binaries produce structured output for automation and model consumers. The companion migration scenario exercises JSON Lines output. Eligibility checks have defined coverage. Retaining the namespace can reduce disruption; namespace changes may restart workloads or cause downtime. Validate recovery boundaries and source/gate versions for the selected case. This area is in active development. Sources: library-olm README/spec; ../kubecon-2026-resource-assessment.md; user migration guidance.
+
+Note: Ask Todd to make a separate repo for the binaries (naming is hard :))
+
+## 10. Install a bundle directly
+
+SLIDE 10: Install a bundle directly
+SPEAKER: OLM B — lifecycle primitives and migration; name to confirm
+START: 11:30
+DURATION: 01:30
+
+TALK TRACK / SOURCES / CAVEATS:
+PR #2907 is OPEN and unmerged as of the 2026-10-28 check. Present direct bundle installation as proposed behavior in active development. It supports registry+v1 bundles only and is controlled by the BoxcutterRuntime feature gate. The requested source uses sourceType: OCIImage and source.ociImage.ref. It bypasses catalog resolution. Describe CRD checks and other lifecycle safeguards according to the proposal's supported path; catalog bypass alone establishes no blanket removal of CRD safety. Pin the source revision and gate configuration before preparing an example. The session uses prepared examples without a live demo.
+
+## 11. Planned Helm content support
+
+SLIDE 11: Planned Helm content support
+SPEAKER: OLM C — content, catalogs and contributions; name to confirm
+START: 13:00
+DURATION: 02:00
+
+TALK TRACK / SOURCES / CAVEATS:
+helm+v2 is the user-confirmed canonical discriminator for versioned OLM Helm packaging/catalog content. Standard chart OCI identity is used, with rendered manifests managed through OLM lifecycle behavior. User values are parsed and validated during rendering. Deterministic rendering is the design goal: features are allow-listed to exclude non-deterministic functionality, with compatibility fixtures required to validate the supported subset. Dependencies are vendored. Hooks and keep behavior are unsupported in the proposal. CRDs use templates/; crds/ is unsupported. Chart release-object mappings and restricted template functions require compatibility testing. Moving CRDs affects upgrade, deletion and data handling. Implementation of proposed gates remains independently unconfirmed. Native chart OCI identity and future OCI catalog storage are separate scopes. Sources: supplied Helm planning brief and feature-planning context.
+
+Transition: the direct-image source motivates future chart content support. The companion Helm experiment uses an OCI image config; standard Helm OCI config handling remains unverified.
+
+## 12. Catalog performance and content types
+
+SLIDE 12: Catalog performance and content types
+SPEAKER: OLM C — content, catalogs and contributions; name to confirm
+START: 15:00
+DURATION: 01:30
+
+TALK TRACK / SOURCES / CAVEATS:
+Credit established FBC capabilities: plaintext editing, composition, extensibility, package-level metadata and version/release properties already exist. The v2 work refines the representation and consumers: less duplicated CSV metadata, version/release fields available directly rather than via property traversal, and explicit mediaType dispatch for installable formats including Helm. Arbitrary FBC schema extensibility alone does not supply end-to-end installation support for a new content type. Catalog processing efficiency is a design benefit to validate, with no measured speedup claimed. Show the practical resolution/metadata work the new representation is intended to reduce. The user-confirmed near-term focus is flexible OLMv1 schemas; OCI-native catalog storage, transport and selective fetching are future work. Channels and legacy graphs are excluded from v2; lifecycle/constraint metadata remains open. Sources: https://olm.operatorframework.io/docs/reference/file-based-catalogs/ ; supplied v2 catalog brief; feature-planning context.
+
+## 13. Shared lifecycle logic in library-olm
+
+SLIDE 13: Shared lifecycle logic in library-olm
+SPEAKER: OLM C — content, catalogs and contributions; name to confirm
+START: 16:30
+DURATION: 01:00
+
+TALK TRACK / SOURCES / CAVEATS:
+Describe library reuse, the current migration development examples and fixtures that record inputs and expected results. The example binaries exercise library behavior and provide contribution starting points. Broader controller, CLI and UI consumption remains a design intent requiring implementation evidence and explicit contracts. Successor semantics need a defined contract. Fixtures can cover legacy input or version/release selection while respecting the proposed v2 schema direction. Pin source versions when documenting examples. C connects catalog work with shared lifecycle logic. Sources: library-olm README/spec; supplied feature-planning context; ../kubecon-2025-slide-context.md slide 13.
+
+## 14. Contribute to Operator Framework
+
+SLIDE 14: Contribute to Operator Framework
+SPEAKER: OLM C — content, catalogs and contributions; name to confirm
+START: 17:30
+DURATION: 01:00
+
+TALK TRACK / SOURCES / CAVEATS:
+Invite contributions to the Operator Framework project: documentation, focused tests, code, and reproducible migration, chart, or schema fixtures. Start with the repository contribution guide: https://github.com/operator-framework/operator-controller/blob/main/CONTRIBUTING.md. Identify an issue or discussion, provide a reproducible case, and describe the expected result.
+
+## 15. Operator Framework: Java Operator SDK
+
+SLIDE 15: Operator Framework: Java Operator SDK
+SPEAKER: OLM C — content, catalogs and contributions; name to confirm
+START: 18:30
+DURATION: 00:30
+
+TALK TRACK / SOURCES / CAVEATS:
+C hands off to Attila for the Java Operator SDK section. OLM packaging supports operators written in any language; SDKs support controller implementation. Attila presents the ten authored SDK slides, unchanged, in approximately ten minutes.
+
+## 16. Read-Cache-After-Write Consistency
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide3; duration=60 seconds; start=19:00; end=20:00]
+
+## 17. Read-Cache-After-Write Consistency
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide4; duration=60 seconds; start=20:00; end=21:00]
+
+## 18. Event Filtering - API & Challenges
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide5; duration=60 seconds; start=21:00; end=22:00]
+
+## 19. Event Filtering
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide6; duration=60 seconds; start=22:00; end=23:00]
+
+## 20. Informer Pools
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide7; duration=60 seconds; start=23:00; end=24:00]
+
+## 21. Informer Pools
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide8; duration=60 seconds; start=24:00; end=25:00]
+
+## 22. Observability stack enhancements
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide9; duration=60 seconds; start=25:00; end=26:00]
+
+## 23. Java Virtual Threads (WIP)
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide10; duration=60 seconds; start=26:00; end=27:00]
+
+## 24. Java Virtual Threads (WIP)
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide11; duration=60 seconds; start=27:00; end=28:00]
+
+## 25. Some honorable mentions…
+
+[SDK import: speaker=Attila; section=SDK; sourceSlide12; duration=60 seconds; start=28:00; end=29:00]
+
+## 26. Resources and contribution steps
+
+SLIDE 26: Resources and contribution steps
+SPEAKER: OLM A — session host; name to confirm
+START: 29:00
+DURATION: 01:00
+
+TALK TRACK / SOURCES / CAVEATS:
+Close with the Operator Framework contribution guide, the OLM documentation, and the Java Operator SDK project. Companion demos are intended for online use; no live demo is planned. Confirm resource links before publication.
+
+## 27. Questions?
+
+SLIDE 27: Questions?
+SPEAKER: OLM A/B/C and Attila — questions
+START: 30:00
+DURATION: 02:00
+
+TALK TRACK / SOURCES / CAVEATS:
+Reserve two minutes for questions and transition overruns. A/B/C answer OLM questions; Attila answers Java Operator SDK questions. The proposed total duration is 32 minutes.

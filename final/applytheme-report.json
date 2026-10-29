@@ -91,20 +91,34 @@
     {
       "displayedSlide": 13,
       "part": "ppt/slides/slide13.xml",
-      "relationshipId": "rId1",
-      "previousTarget": "../slideLayouts/slideLayout1.xml",
-      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
-    },
-    {
-      "displayedSlide": 24,
-      "part": "ppt/slides/slide14.xml",
       "relationshipId": "rId2",
       "previousTarget": "../slideLayouts/slideLayout1.xml",
       "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
     },
     {
-      "displayedSlide": 25,
+      "displayedSlide": 14,
+      "part": "ppt/slides/slide14.xml",
+      "relationshipId": "rId3",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 15,
       "part": "ppt/slides/slide15.xml",
+      "relationshipId": "rId1",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 26,
+      "part": "ppt/slides/slide16.xml",
+      "relationshipId": "rId2",
+      "previousTarget": "../slideLayouts/slideLayout1.xml",
+      "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
+    },
+    {
+      "displayedSlide": 27,
+      "part": "ppt/slides/slide17.xml",
       "relationshipId": "rId2",
       "previousTarget": "../slideLayouts/slideLayout1.xml",
       "target": "../../sdk/ppt/slideLayouts/slideLayout5.xml"
@@ -117,9 +131,9 @@
   "notesByteIdentical": true,
   "onlyGeneratedLayoutRelationshipsChanged": true,
   "relationshipsValid": true,
-  "displayedSlides": 25,
+  "displayedSlides": 27,
   "sdkPartsChecked": 90,
-  "outputSha256": "03d6aa733a386a5f1538dfcc0465ed0272280bfab9896f24c7530d567fc57e03",
+  "outputSha256": "ebf3f0153f1b74789fcca1cf67f89d209d180049306a5a9a61f4ed41fb656854",
   "limitations": [
     "Explicit shape formatting and image pixels are preserved; generate them using theme.json.",
     "Opaque content or showMasterSp=0 can hide inherited branding; reserve the footer before generating.",

@@ -3,7 +3,7 @@
     "number": 1,
     "kind": "generated",
     "baseIndex": 0,
-    "speaker": "OLM A — context / host; name to confirm",
+    "speaker": "OLM A — context and installation; name to confirm",
     "title": "The Next Era of Kubernetes Operator Lifecycle Management",
     "duration": 45,
     "start": 0
@@ -12,7 +12,7 @@
     "number": 2,
     "kind": "generated",
     "baseIndex": 1,
-    "speaker": "OLM A — team introduction; name to confirm",
+    "speaker": "OLM A — context and installation; name to confirm",
     "title": "Presentation team",
     "duration": 30,
     "start": 45
@@ -21,7 +21,7 @@
     "number": 3,
     "kind": "generated",
     "baseIndex": 2,
-    "speaker": "OLM A — context / host; name to confirm",
+    "speaker": "OLM A — context and installation; name to confirm",
     "title": "Compatibility and lifecycle foundations",
     "duration": 90,
     "start": 75
@@ -30,7 +30,7 @@
     "number": 4,
     "kind": "generated",
     "baseIndex": 3,
-    "speaker": "OLM A — context / host; name to confirm",
+    "speaker": "OLM A — context and installation; name to confirm",
     "title": "OLM: past, current and future",
     "duration": 75,
     "start": 165
@@ -39,109 +39,107 @@
     "number": 5,
     "kind": "generated",
     "baseIndex": 4,
-    "speaker": "OLM B — lifecycle primitives; name to confirm",
-    "title": "Install a bundle directly",
-    "duration": 90,
+    "speaker": "OLM A — context and installation; name to confirm",
+    "title": "Streamlined Installation",
+    "duration": 60,
     "start": 240
   },
   {
     "number": 6,
     "kind": "generated",
     "baseIndex": 5,
-    "speaker": "OLM B — lifecycle primitives; name to confirm",
-    "title": "Inspect phased resource rollouts",
-    "duration": 120,
-    "start": 330
+    "speaker": "OLM A — context and installation; name to confirm",
+    "title": "Namespace Management",
+    "duration": 60,
+    "start": 300
   },
   {
     "number": 7,
     "kind": "generated",
     "baseIndex": 6,
-    "speaker": "OLM B — lifecycle primitives; name to confirm",
-    "title": "User control of extension deployments",
-    "duration": 90,
-    "start": 450
+    "speaker": "OLM B — lifecycle primitives and migration; name to confirm",
+    "title": "Inspect phased resource rollouts",
+    "duration": 120,
+    "start": 360
   },
   {
     "number": 8,
     "kind": "generated",
     "baseIndex": 7,
-    "speaker": "OLM B — lifecycle primitives; name to confirm",
-    "title": "OLMv0 → OLMv1 migration",
-    "duration": 120,
-    "start": 540
+    "speaker": "OLM B — lifecycle primitives and migration; name to confirm",
+    "title": "User control of extension deployments",
+    "duration": 90,
+    "start": 480
   },
   {
     "number": 9,
     "kind": "generated",
     "baseIndex": 8,
-    "speaker": "OLM B — lifecycle primitives; name to confirm",
-    "title": "Shared lifecycle logic in library-olm",
-    "duration": 60,
-    "start": 660
+    "speaker": "OLM B — lifecycle primitives and migration; name to confirm",
+    "title": "OLMv0 → OLMv1 migration",
+    "duration": 120,
+    "start": 570
   },
   {
     "number": 10,
     "kind": "generated",
     "baseIndex": 9,
-    "speaker": "OLM C — content/catalogs/contributions; name to confirm",
-    "title": "Planned Helm content support",
-    "duration": 120,
-    "start": 720
+    "speaker": "OLM B — lifecycle primitives and migration; name to confirm",
+    "title": "Install a bundle directly",
+    "duration": 90,
+    "start": 690
   },
   {
     "number": 11,
     "kind": "generated",
     "baseIndex": 10,
-    "speaker": "OLM C — content/catalogs/contributions; name to confirm",
-    "title": "Catalog performance and content types",
-    "duration": 90,
-    "start": 840
+    "speaker": "OLM C — content, catalogs and contributions; name to confirm",
+    "title": "Planned Helm content support",
+    "duration": 120,
+    "start": 780
   },
   {
     "number": 12,
     "kind": "generated",
     "baseIndex": 11,
-    "speaker": "OLM C — content/catalogs/contributions; name to confirm",
-    "title": "Contribute to Operator Framework",
-    "duration": 60,
-    "start": 930
+    "speaker": "OLM C — content, catalogs and contributions; name to confirm",
+    "title": "Catalog performance and content types",
+    "duration": 90,
+    "start": 900
   },
   {
     "number": 13,
     "kind": "generated",
     "baseIndex": 12,
-    "speaker": "OLM C — content/catalogs/contributions; name to confirm",
-    "title": "Operator Framework: Java Operator SDK",
-    "duration": 30,
+    "speaker": "OLM C — content, catalogs and contributions; name to confirm",
+    "title": "Shared lifecycle logic in library-olm",
+    "duration": 60,
     "start": 990
   },
   {
     "number": 14,
-    "kind": "authored-sdk",
-    "sourceSlide": 3,
-    "part": "sdk/ppt/slides/slide3.xml",
-    "title": "Read-Cache-After-Write Consistency",
-    "speaker": "Attila",
+    "kind": "generated",
+    "baseIndex": 13,
+    "speaker": "OLM C — content, catalogs and contributions; name to confirm",
+    "title": "Contribute to Operator Framework",
     "duration": 60,
-    "start": 1020
+    "start": 1050
   },
   {
     "number": 15,
-    "kind": "authored-sdk",
-    "sourceSlide": 4,
-    "part": "sdk/ppt/slides/slide4.xml",
-    "title": "Read-Cache-After-Write Consistency",
-    "speaker": "Attila",
-    "duration": 60,
-    "start": 1080
+    "kind": "generated",
+    "baseIndex": 14,
+    "speaker": "OLM C — content, catalogs and contributions; name to confirm",
+    "title": "Operator Framework: Java Operator SDK",
+    "duration": 30,
+    "start": 1110
   },
   {
     "number": 16,
     "kind": "authored-sdk",
-    "sourceSlide": 5,
-    "part": "sdk/ppt/slides/slide5.xml",
-    "title": "Event Filtering - API & Challenges",
+    "sourceSlide": 3,
+    "part": "sdk/ppt/slides/slide3.xml",
+    "title": "Read-Cache-After-Write Consistency",
     "speaker": "Attila",
     "duration": 60,
     "start": 1140
@@ -149,9 +147,9 @@
   {
     "number": 17,
     "kind": "authored-sdk",
-    "sourceSlide": 6,
-    "part": "sdk/ppt/slides/slide6.xml",
-    "title": "Event Filtering",
+    "sourceSlide": 4,
+    "part": "sdk/ppt/slides/slide4.xml",
+    "title": "Read-Cache-After-Write Consistency",
     "speaker": "Attila",
     "duration": 60,
     "start": 1200
@@ -159,9 +157,9 @@
   {
     "number": 18,
     "kind": "authored-sdk",
-    "sourceSlide": 7,
-    "part": "sdk/ppt/slides/slide7.xml",
-    "title": "Informer Pools",
+    "sourceSlide": 5,
+    "part": "sdk/ppt/slides/slide5.xml",
+    "title": "Event Filtering - API & Challenges",
     "speaker": "Attila",
     "duration": 60,
     "start": 1260
@@ -169,9 +167,9 @@
   {
     "number": 19,
     "kind": "authored-sdk",
-    "sourceSlide": 8,
-    "part": "sdk/ppt/slides/slide8.xml",
-    "title": "Informer Pools",
+    "sourceSlide": 6,
+    "part": "sdk/ppt/slides/slide6.xml",
+    "title": "Event Filtering",
     "speaker": "Attila",
     "duration": 60,
     "start": 1320
@@ -179,9 +177,9 @@
   {
     "number": 20,
     "kind": "authored-sdk",
-    "sourceSlide": 9,
-    "part": "sdk/ppt/slides/slide9.xml",
-    "title": "Observability stack enhancements",
+    "sourceSlide": 7,
+    "part": "sdk/ppt/slides/slide7.xml",
+    "title": "Informer Pools",
     "speaker": "Attila",
     "duration": 60,
     "start": 1380
@@ -189,9 +187,9 @@
   {
     "number": 21,
     "kind": "authored-sdk",
-    "sourceSlide": 10,
-    "part": "sdk/ppt/slides/slide10.xml",
-    "title": "Java Virtual Threads (WIP) ",
+    "sourceSlide": 8,
+    "part": "sdk/ppt/slides/slide8.xml",
+    "title": "Informer Pools",
     "speaker": "Attila",
     "duration": 60,
     "start": 1440
@@ -199,9 +197,9 @@
   {
     "number": 22,
     "kind": "authored-sdk",
-    "sourceSlide": 11,
-    "part": "sdk/ppt/slides/slide11.xml",
-    "title": "Java Virtual Threads (WIP) ",
+    "sourceSlide": 9,
+    "part": "sdk/ppt/slides/slide9.xml",
+    "title": "Observability stack enhancements",
     "speaker": "Attila",
     "duration": 60,
     "start": 1500
@@ -209,29 +207,49 @@
   {
     "number": 23,
     "kind": "authored-sdk",
-    "sourceSlide": 12,
-    "part": "sdk/ppt/slides/slide12.xml",
-    "title": "Some honorable mentions…",
+    "sourceSlide": 10,
+    "part": "sdk/ppt/slides/slide10.xml",
+    "title": "Java Virtual Threads (WIP)",
     "speaker": "Attila",
     "duration": 60,
     "start": 1560
   },
   {
     "number": 24,
-    "kind": "generated",
-    "baseIndex": 13,
-    "speaker": "OLM A — session host; name to confirm",
-    "title": "Resources and contribution steps",
+    "kind": "authored-sdk",
+    "sourceSlide": 11,
+    "part": "sdk/ppt/slides/slide11.xml",
+    "title": "Java Virtual Threads (WIP)",
+    "speaker": "Attila",
     "duration": 60,
     "start": 1620
   },
   {
     "number": 25,
+    "kind": "authored-sdk",
+    "sourceSlide": 12,
+    "part": "sdk/ppt/slides/slide12.xml",
+    "title": "Some honorable mentions…",
+    "speaker": "Attila",
+    "duration": 60,
+    "start": 1680
+  },
+  {
+    "number": 26,
     "kind": "generated",
-    "baseIndex": 14,
-    "speaker": "OLM A/B/C on OLM; Attila on Java SDK only",
+    "baseIndex": 15,
+    "speaker": "OLM A — session host; name to confirm",
+    "title": "Resources and contribution steps",
+    "duration": 60,
+    "start": 1740
+  },
+  {
+    "number": 27,
+    "kind": "generated",
+    "baseIndex": 16,
+    "speaker": "OLM A/B/C and Attila — questions",
     "title": "Questions?",
     "duration": 120,
-    "start": 1680
+    "start": 1800
   }
 ]

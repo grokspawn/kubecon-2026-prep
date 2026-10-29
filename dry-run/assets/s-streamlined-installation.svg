@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480" role="img" aria-labelledby="title"><title id="title">Installing an extension: earlier releases required a service account; since v1.11.0 the controller manages it</title><defs><marker id="flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#113E82"/></marker><marker id="muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#5D6B7B"/></marker></defs><rect width="720" height="480" fill="#FFFFFF"/>
+<text x="360" y="55" text-anchor="middle" font-family="Arial" font-size="34" font-weight="600" fill="#000000">Installing an extension</text>
+
+<text x="40" y="112" font-family="Arial" font-size="22" font-weight="600" fill="#5D6B7B">v1.10 and earlier</text>
+<rect x="30" y="130" width="215" height="72" rx="16" fill="#FFFFFF" stroke="#ADC5EF" stroke-width="3"/>
+<text x="137.5" y="160" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#052243">Create</text>
+<text x="137.5" y="186" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#052243">service account</text>
+<rect x="290" y="130" width="215" height="72" rx="16" fill="#FFFFFF" stroke="#ADC5EF" stroke-width="3"/>
+<text x="397.5" y="160" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#052243">Create</text>
+<text x="397.5" y="186" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#052243">ClusterExtension</text>
+<rect x="550" y="130" width="140" height="72" rx="16" fill="#FFFFFF" stroke="#ADC5EF" stroke-width="3"/>
+<text x="620" y="172" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#052243">Installed</text>
+<path d="M245,166 H282" fill="none" stroke="#5D6B7B" stroke-width="4" stroke-linecap="round" marker-end="url(#muted)"/>
+<path d="M505,166 H542" fill="none" stroke="#5D6B7B" stroke-width="4" stroke-linecap="round" marker-end="url(#muted)"/>
+
+<text x="40" y="268" font-family="Arial" font-size="22" font-weight="600" fill="#00144C">Since v1.11.0</text>
+<rect x="30" y="286" width="215" height="72" rx="16" fill="#E3F6FF" stroke="#113E82" stroke-width="3"/>
+<text x="137.5" y="316" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#00144C">Create</text>
+<text x="137.5" y="342" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#00144C">ClusterExtension</text>
+<rect x="550" y="286" width="140" height="72" rx="16" fill="#E3F6FF" stroke="#113E82" stroke-width="3"/>
+<text x="620" y="328" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#00144C">Installed</text>
+<path d="M245,322 H542" fill="none" stroke="#113E82" stroke-width="5" stroke-linecap="round" marker-end="url(#flow)"/>
+<rect x="270" y="382" width="250" height="56" rx="14" fill="#FFEE88" stroke="#D62293" stroke-width="3"/>
+<text x="395" y="406" text-anchor="middle" font-family="Arial" font-size="19" font-weight="600" fill="#D62293">Service account managed</text>
+<text x="395" y="428" text-anchor="middle" font-family="Arial" font-size="19" font-weight="600" fill="#D62293">by the controller</text>
+<text x="360" y="470" text-anchor="middle" font-family="Arial" font-size="20" font-weight="400" fill="#5D6B7B">Same lifecycle, fewer prerequisites</text>
+</svg>

@@ -1,5 +1,58 @@
 # KubeCon NA 2026 — presentation and companion package outline
 
+## Current Google deck — 2026-10-28
+
+The [working Google deck](https://docs.google.com/presentation/d/1yLWsXrp2GWjLyS_ztnbnmR40OGwm29QHI4qpxGHf7A8/edit) has **27 slides** in the order below. The target is **32 minutes including questions**. This section supersedes the October 9 twenty-beat plan and its timing, status labels, slide numbering, SDK condensation and cut plan below. The older material is retained as planning history, not current instructions. The local builder and generated outputs follow the current slide content and order; they are not direct Google Slides exports. The earlier 25-slide outputs are archived separately.
+
+### Current run of show
+
+Timing is a **proposed rehearsal allocation**, not speaker-approved. The additional two minutes are allocated to the new installation and namespace slides; the SDK retains ten minutes. The three OLM roles remain unassigned; Attila covers Java Operator SDK only. No live demo is planned.
+
+For a balanced OLM allocation, A presents slides 1–6 and the close (7 minutes), B presents slides 7–10 (7 minutes), and C presents slides 11–15 (6 minutes). Questions are shared. Confirm the A/B/C mapping with Rashmi, Joe, and Jordan.
+
+| Slide | Start | Duration | Topic |
+|---:|---:|---:|---|
+| 1 | 00:00 | 00:45 | Title |
+| 2 | 00:45 | 00:30 | Presentation team: Rashmi, Joe and Jordan; introduce Attila for SDK |
+| 3 | 01:15 | 01:30 | Compatibility and lifecycle foundations |
+| 4 | 02:45 | 01:15 | OLM past, current and future |
+| 5 | 04:00 | 01:00 | Streamlined installation |
+| 6 | 05:00 | 01:00 | Namespace management |
+| 7 | 06:00 | 02:00 | Phased rollout and ClusterObjectDeployment |
+| 8 | 08:00 | 01:30 | Deployment configuration |
+| 9 | 09:30 | 02:00 | OLMv0 to OLMv1 migration |
+| 10 | 11:30 | 01:30 | Direct bundle installation |
+| 11 | 13:00 | 02:00 | Planned Helm content support |
+| 12 | 15:00 | 01:30 | Catalog performance and content types |
+| 13 | 16:30 | 01:00 | Shared lifecycle logic in library-olm |
+| 14 | 17:30 | 01:00 | Contribute to Operator Framework |
+| 15 | 18:30 | 00:30 | Java Operator SDK divider and handoff |
+| 16–25 | 19:00 | 10:00 | Attila's authored SDK source slides 3–12, unchanged; one minute each as a rehearsal baseline |
+| 26 | 29:00 | 01:00 | Resources and contribution steps |
+| 27 | 30:00 | 02:00 | Questions and buffer |
+
+The OLM segment, including the divider, ends at 19:00. If it runs long, shorten remaining OLM explanations and resource pointers before reducing SDK time; preserve the handoff and confirm any timing changes with speakers. OLM presenters handle OLM questions; Attila handles SDK questions.
+
+### Current claim and source checks
+
+- **Slide 5:** [v1.11.0](https://github.com/operator-framework/operator-controller/releases/tag/v1.11.0) introduced the standard-channel change in [PR #2770](https://github.com/operator-framework/operator-controller/pull/2770): `spec.serviceAccount` is optional, deprecated and ignored. The controller uses its own cluster-admin service account. ClusterExtension write access implies significant trust; admission policy is a possible control alongside RBAC, not a complete authorization design.
+- **Slide 6:** [v1.12.0](https://github.com/operator-framework/operator-controller/releases/tag/v1.12.0) introduced managed namespaces in the experimental feature set. [PR #2929](https://github.com/operator-framework/operator-controller/pull/2929) makes `spec.namespace` optional; [PR #2926](https://github.com/operator-framework/operator-controller/pull/2926) describes the feature-gated runtime. A supplied namespace is user-managed; when omitted, bundle metadata can inform a system-managed namespace. Deletion, or an upgrade that changes the resolved namespace, can delete unrelated objects within the managed namespace. Verify transition rules before presenting specifics.
+- **Slide 7:** [PR #3058](https://github.com/operator-framework/operator-controller/pull/3058), merged October 28, changes the experimental path to `ClusterExtension → ClusterObjectDeployment → ClusterObjectSet` revisions; the deployment controller manages revision lifecycle. The rollout runtime is in active development and controlled by feature-gate. Readiness is not a guarantee of application correctness or transactional rollback. Standalone deployment documentation is [in review](https://github.com/operator-framework/operator-controller/pull/3072); namespace-scoped evolution is a consideration, not a commitment.
+- **Slide 8:** DeploymentConfig is in active development and controlled by feature-gate. Pin versions and verify field-specific behavior against the [draft guide](https://operator-framework.github.io/operator-controller/draft/howto/customize-operator-deployments/).
+- **Slides 9 and 13:** [library-olm](https://github.com/operator-framework/library-olm) contains migration work; check eligibility and version compatibility, and do not promise disruption-free handoff or rollback in every case. Successor resolution is an intended direction, not a demonstrated library implementation. See the dated [demo status](demo-development-status.md) for the recorded migration case and its boundaries.
+- **Slide 10:** [PR #2907](https://github.com/operator-framework/operator-controller/pull/2907) was open on October 28. It proposes direct registry+v1 bundle installation, bypassing catalog resolution, with the `BoxcutterRuntime` gate. A direct image reference does not provide catalog-based upgrade selection or safety; avoid claiming all other checks disappear.
+- **Slides 11–12:** Helm chart content and v2 catalog schemas are planned; `helm+v2` is the OLM packaging discriminator, not a Helm CLI version. Existing file-based catalogs are the foundation. Flexible schemas come first; OCI-native catalog storage/transport remains future work. No performance improvement is established without measurement. The [demo status](demo-development-status.md) describes a separate development-branch Helm experiment; it is not proof of merged upstream support or standard Helm OCI artifact compatibility.
+- **Slides 14 and 26:** Point to verified project entry points such as [operator-controller's contributing guide](https://github.com/operator-framework/operator-controller/blob/main/CONTRIBUTING.md) and [library-olm](https://github.com/operator-framework/library-olm). Vet any specific tasks and public resource hub before presenting them as ready.
+- **Slides 16–25:** Preserve Attila's authored text and illustrations. SDK version/support statements, including virtual threads, require his confirmation; a planned version is not a release promise.
+
+The October 28 updates replaced the two release placeholders, corrected existing numbered footers, and updated speaker notes and timing. Slides 5–6 and the authored SDK pages do not have numbered footers. Slides 5 and 6 have new illustrations, and slide 14 has a QR code linking to the operator-controller contribution guide. See the [current speaker notes](current-deck-speaker-notes.md) and [run-of-show data](current-deck-run-of-show.json).
+
+---
+
+## Historical outline — Draft 3, 2026-10-09
+
+Everything below is retained for source provenance and historical rationale. Its timings, order, status labels, presentation-management assumptions and proposed SDK condensation are superseded by the current section above.
+
 Draft 3 · 2026-10-09 · Event: November 9–12, 2026. Generated working content lives in `~/devel/breadcrumbs/2026-kubecon-wip/`.
 
 **Current dry-run revision:** see `dry-run/slide-data.json` for the reordered OLM material and `dry-run/deck-manifest.json` for the combined25-slide order. History opens the content section; direct bundle installation is included; original SDKtechnicalsource slides3–12 are retained unchanged as output14–23. The older twenty-beat/condensed-SDK treatment below is planning history and must not be reused as an approved SDK content rewrite.

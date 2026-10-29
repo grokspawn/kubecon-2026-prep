@@ -1,5 +1,7 @@
 # KubeCon working-area instructions
 
+- For session continuity, read `SESSION-HANDOFF.md` and the current section of `kubecon-2026-outline.md` before making changes.
+- The current Google deck and local rebuilt presentations have 27 slides and a proposed 32-minute duration, including questions. The Google deck remains the working master; local PPTX/PDF files are regenerated, not direct Google exports.
 - Generate all new content for this KubeCon project inside this directory or a subdirectory; do not scatter project output in the breadcrumbs root or temporary storage.
 - Preserve original reference files in the parent directory, source decks and Google documents unless the user explicitly requests edits.
 - Confirmed speakers: four total, three OLM plus Attila exclusively on Java Operator SDK.

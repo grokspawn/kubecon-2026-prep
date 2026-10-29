@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480" role="img" aria-labelledby="title desc">
+  <title id="title">Namespace management</title>
+  <desc id="desc">With the feature gate enabled, setting spec.namespace selects an existing user-managed namespace. Omitting it selects a system-managed namespace derived from bundle metadata or a fallback. Deleting the extension deletes the system-managed namespace and its remaining contents, including unrelated objects.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#113E82"/></marker>
+  </defs>
+  <rect width="720" height="480" fill="#FFFFFF"/>
+  <path d="M28 35h38" stroke="#E42A91" stroke-width="6" stroke-linecap="round"/>
+  <text x="28" y="78" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#00144C">Namespace selection</text>
+  <rect x="452" y="49" width="240" height="30" rx="15" fill="#F1F6FF"/>
+  <text x="572" y="69" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#113E82">CONTROLLED BY FEATURE-GATE</text>
+
+  <rect x="222" y="96" width="276" height="55" rx="12" fill="#00144C"/>
+  <text x="360" y="130" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="21" font-weight="700" fill="#FFFFFF">spec.namespace</text>
+  <path d="M300 151v14H191v18" fill="none" stroke="#113E82" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+  <path d="M420 151v14h109v18" fill="none" stroke="#113E82" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+
+  <rect x="28" y="191" width="326" height="170" rx="16" fill="#FFFFFF" stroke="#113E82" stroke-width="2.5"/>
+  <rect x="47" y="209" width="66" height="29" rx="14.5" fill="#113E82"/>
+  <text x="80" y="229" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">SET</text>
+  <text x="48" y="275" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#00144C">Existing namespace</text>
+  <text x="48" y="308" font-family="Arial, sans-serif" font-size="21" fill="#00144C">User-managed</text>
+  <path d="M48 333h65" stroke="#E42A91" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="366" y="191" width="326" height="170" rx="16" fill="#F1F6FF" stroke="#113E82" stroke-width="2.5"/>
+  <rect x="385" y="209" width="96" height="29" rx="14.5" fill="#113E82"/>
+  <text x="433" y="229" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">OMITTED</text>
+  <text x="386" y="271" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#00144C">System-managed</text>
+  <text x="386" y="300" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#00144C">namespace</text>
+  <text x="386" y="331" font-family="Arial, sans-serif" font-size="17" fill="#00144C">Bundle metadata or fallback</text>
+
+  <rect x="28" y="380" width="664" height="73" rx="13" fill="#00144C"/>
+  <path d="M47 397v39" stroke="#E42A91" stroke-width="5" stroke-linecap="round"/>
+  <text x="65" y="409" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#FFFFFF">Deleting the extension deletes its managed namespace</text>
+  <text x="65" y="435" font-family="Arial, sans-serif" font-size="18" fill="#FFFFFF">and all remaining contents, including unrelated objects.</text>
+</svg>

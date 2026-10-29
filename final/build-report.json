@@ -1,8 +1,8 @@
 {
   "variant": "final",
-  "slides": 25,
-  "totalSeconds": 1800,
-  "notes": 25,
+  "slides": 27,
+  "totalSeconds": 1920,
+  "notes": 27,
   "rendering": "LibreOffice PPTX→PDF; pdftoppm previews",
   "editableText": true,
   "sdkPreservation": {

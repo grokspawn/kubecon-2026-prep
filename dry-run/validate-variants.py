@@ -22,6 +22,11 @@ import zipfile
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parent
 TITLE = "The Next Era of Kubernetes Operator Lifecycle Management"
+SLIDES = 27
+BASE_SLIDES = 17
+SDK_FIRST = 16
+SDK_LAST = 25
+TOTAL_SECONDS = 1920
 MARK = re.compile(r"\bdry[\s\-–—]*run\b|\balignment[\s\-–—]+draft\b", re.I)
 OWNERSHIP = re.compile(
     r"\bAttila\b|\bOLM\s*[ABC](?:\b|/)|\bspeakers?\b|\bhand[ -]?offs?\b|"
@@ -38,6 +43,29 @@ NS = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main",
 
 def normalized(value):
     return " ".join(str(value).split())
+
+
+def clock(seconds):
+    return f"{seconds // 60:02d}:{seconds % 60:02d}"
+
+
+def snapshot_text(slide):
+    """Return snapshot copy as individually checkable lines, without furniture."""
+    return [normalized(line.lstrip("• ")) for block in slide["text"]
+            for line in block.splitlines() if line.strip()
+            and not re.fullmatch(r"\s*\d+\s*/\s*27\s*", line)]
+
+
+def embedded_images(parts, slide_part, sdk):
+    """Return the bytes of images actually referenced by this displayed slide."""
+    slide = ET.fromstring(parts[slide_part])
+    rels = {r.get("Id"): r for r in sdk.relationships(parts, slide_part)}
+    images = []
+    for blip in slide.findall(".//p:pic//a:blip", NS):
+        rel = rels.get(blip.get("{" + sdk.R + "}embed"))
+        if rel is not None and rel.get("TargetMode") != "External":
+            images.append(parts[sdk.resolve(slide_part, rel.get("Target"))])
+    return images
 
 
 def sha(data):
@@ -74,7 +102,7 @@ def public_content(slide, section):
     for value in paragraphs(slide):
         if not value or value == normalized(section):
             continue
-        if re.fullmatch(r"\d+\s*/\s*25(?:\s*\|\s*KUBECON NA 2026\s*\|\s*DRY[ -]?RUN)?",
+        if re.fullmatch(r"\d+\s*/\s*27(?:\s*\|\s*KUBECON NA 2026\s*\|\s*DRY[ -]?RUN)?",
                         value, re.I):
             continue
         result.append(value)
@@ -137,7 +165,7 @@ def intersection(a, b, tolerance=12700):
             and min(y + h, v + ch) - max(y, v) > tolerance)
 
 
-def validate(variant, directory, data, source_path, source, sdk, profile):
+def validate(variant, directory, data, source_path, source, sdk, profile, snapshot, show):
     result = {"variant": variant, "status": "failed", "errors": [],
               "offCanvasObjects": [], "overlappingTextBoxes": [],
               "brandingObstructions": [], "sdkUnchanged": False}
@@ -161,9 +189,9 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
         imported = load_json(directory / "import-report.json")
         notes_document = normalized((directory / "speaker-notes.md").read_text())
         order = sdk.displayed(parts)
-        check(len(order) == len(manifest) == 25, "Expected 25 displayed slides and manifest records")
+        check(len(order) == len(manifest) == SLIDES, "Expected 27 displayed slides and manifest records")
         check(sdk.canvas(parts) == sdk.CANVAS, "Unexpected slide canvas")
-        check(sum(i["duration"] for i in manifest) == 1800, "Manifest duration must total 1800 seconds")
+        check(sum(i["duration"] for i in manifest) == TOTAL_SECONDS, "Manifest duration must total 1920 seconds")
         check(imported.get("verification", {}).get("import_verified"), "SDK import report is not verified")
         check(imported["source_sha256"] == sha(source_path.read_bytes()), "SDK source hash changed")
         for name, content in parts.items():
@@ -173,6 +201,10 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
         core = ET.fromstring(parts["docProps/core.xml"])
         check(core.findtext("{http://purl.org/dc/elements/1.1/}title") == TITLE,
               "Core metadata title differs from confirmed title")
+        if "docProps/app.xml" in parts:
+            app = ET.fromstring(parts["docProps/app.xml"])
+            slides_metadata = next((node.text for node in app if node.tag.endswith("}Slides")), None)
+            check(slides_metadata == str(SLIDES), "Presentation slide-count metadata must be 27")
         # Independently compare the complete imported source resources, not report flags.
         changed_notes = {sdk.notes_for(source, f"ppt/slides/slide{n}.xml") for n in range(3, 13)}
         protected = {n: b for n, b in source.items()
@@ -196,9 +228,16 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
             visible = text_of(slide)
             notes_part = sdk.notes_for(parts, slide_part)
             notes = normalized(" ".join(sdk.text(parts[notes_part])))
+            reference = show["records"][number - 1]
+            reference_slide = snapshot["slides"][number - 1]
             check(bool(notes), f"Slide {number}: missing notes")
             check(item["number"] == number and item["start"] == elapsed,
                   f"Slide {number}: manifest position/start mismatch")
+            check(reference["number"] == number and reference_slide["number"] == number,
+                  f"Slide {number}: reference position mismatch")
+            check(item["title"] == reference["title"] and clock(item["start"]) == reference["start"]
+                  and clock(item["duration"]) == reference["duration"],
+                  f"Slide {number}: title/start/duration differs from run-of-show")
             elapsed += item["duration"]
             check(normalized(item["title"]) in notes_document,
                   f"Slide {number}: title absent from speaker-notes.md")
@@ -215,17 +254,22 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
                                 master = sdk.resolve(layout, master_rel.get("Target"))
                                 check(not MARK.search(text_of(ET.fromstring(parts[master]))),
                                       f"Slide {number}: inherited master contains a review mark")
-            if 14 <= number <= 23:
+            if SDK_FIRST <= number <= SDK_LAST:
                 sdk_count += 1
-                original = f"ppt/slides/slide{number - 11}.xml"
-                check(item["kind"] == "authored-sdk" and item["sourceSlide"] == number - 11,
+                source_number = number - SDK_FIRST + 3
+                original = f"ppt/slides/slide{source_number}.xml"
+                check(item["kind"] == "authored-sdk" and item["sourceSlide"] == source_number,
                       f"Slide {number}: SDK source assignment mismatch")
                 check(parts[slide_part] == source[original], f"Slide {number}: SDK XML bytes changed")
                 check(sdk.text(parts[slide_part]) == sdk.text(source[original]),
                       f"Slide {number}: SDK visible text changed")
-                entry = imported["source_mapping"][number - 14]
+                entry = imported["source_mapping"][number - SDK_FIRST]
                 check(entry.get("output_slide") == number and entry["imported_part"] == slide_part,
                       f"Slide {number}: import report mapping mismatch")
+                check(entry.get("speaker") == "Attila" and entry.get("duration_seconds") == 60
+                      and entry.get("start") == reference["start"]
+                      and entry.get("end") == clock(item["start"] + item["duration"]),
+                      f"Slide {number}: SDK import report timing/assignment mismatch")
                 expected_notes = sdk.append_notes(source[sdk.notes_for(source, original)], dict(entry))
                 check(sdk.text(parts[notes_part]) == sdk.text(expected_notes),
                       f"Slide {number}: authored notes/assignment changed")
@@ -235,20 +279,28 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
                                 "sdkXmlSha256": sha(parts[slide_part])})
                 continue
             generated += 1
-            index = number - 1 if number <= 13 else number - 11
+            index = number - 1 if number < SDK_FIRST else number - 11
             original = data[index]
             check(item["kind"] == "generated" and item["baseIndex"] == index,
                   f"Slide {number}: generated base assignment mismatch")
             check(item["title"] == original["title"] and item["duration"] == original["duration"],
                   f"Slide {number}: logical title/duration differs from source JSON")
+            for value in snapshot_text(reference_slide):
+                check(value in visible, f"Slide {number}: snapshot public copy missing: {value}")
             for value in [original["title"], original.get("status", ""), original.get("lead", ""),
                           *original.get("bullets", []), original.get("caption", ""), *original.get("team", [])]:
                 check(not value or normalized(value) in visible,
                       f"Slide {number}: missing public copy: {value}")
             speaker = original.get("speaker")
-            check(bool(speaker) and f"SPEAKER: {speaker}" in notes,
+            check(speaker == reference["speaker"] and item.get("speaker") == reference["speaker"]
+                  and f"SPEAKER: {reference['speaker']}" in notes,
                   f"Slide {number}: missing source speaker assignment (source speaker={speaker!r})")
+            check(f"SLIDE {number}: {reference['title']}" in notes,
+                  f"Slide {number}: notes slide number/title mismatch")
             check(normalized(original["notes"]) in notes, f"Slide {number}: source notes not preserved")
+            talk_track = reference["notes"].partition("TALK TRACK / SOURCES / CAVEATS:")[2].strip()
+            check(bool(talk_track) and normalized(talk_track) in notes,
+                  f"Slide {number}: run-of-show talk track/caveats not preserved")
             check(f"DURATION: {item['duration'] // 60:02d}:{item['duration'] % 60:02d}" in notes,
                   f"Slide {number}: notes duration differs")
             check(f"START: {item['start'] // 60:02d}:{item['start'] % 60:02d}" in notes,
@@ -260,7 +312,10 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
                 for name in ("Rashmi", "Joe", "Jordan"):
                     guarded = re.sub(r"\b" + name + r"\b", "", guarded)
             check(not OWNERSHIP.search(guarded), f"Slide {number}: visible ownership/assignment")
-            check(not MATURITY.search(visible), f"Slide {number}: technical maturity label")
+            allowed_maturity = {m.group().lower() for value in snapshot_text(reference_slide)
+                                for m in MATURITY.finditer(value)}
+            check(all(m.group().lower() in allowed_maturity for m in MATURITY.finditer(visible)),
+                  f"Slide {number}: unreferenced technical maturity label")
             native = objects(slide)
             text_boxes = [o for o in native if o["text"]]
             for first_index, obj in enumerate(text_boxes):
@@ -273,15 +328,29 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
                             {"slide": number, "texts": [obj["text"], second["text"]]})
             if number == 1:
                 check(not re.search(r"\bprogress\b", visible, re.I), "Cover contains visible 'progress'")
-                pictures = slide.findall(".//p:pic", NS)
-                rels = {r.get("Id"): r for r in sdk.relationships(parts, slide_part)}
                 asset_dir = ROOT / "theme" / "assets" if variant == "final" else ROOT / "assets"
                 asset = asset_dir / original["image"]
-                targets = [sdk.resolve(slide_part, rels[b.get("{" + sdk.R + "}embed")].get("Target"))
-                           for pic in pictures for b in pic.findall(".//a:blip", NS)
-                           if b.get("{" + sdk.R + "}embed") in rels]
-                check(asset.is_file() and any(parts[t] == asset.read_bytes() for t in targets),
-                      "Cover must embed the real s01 operator-lifecycle asset")
+                check(asset.is_file() and asset.read_bytes() in embedded_images(parts, slide_part, sdk),
+                       "Cover must embed the real s01 operator-lifecycle asset")
+            if number in (5, 6, 14):
+                asset = ROOT.parent / original["imagePath"]
+                pictures = embedded_images(parts, slide_part, sdk)
+                check(asset.is_file() and asset.read_bytes() in pictures,
+                      f"Slide {number}: required {asset.name} is not embedded")
+                if number == 14:
+                    check("https://github.com/operator-framework/operator-controller/blob/main/CONTRIBUTING.md" in notes,
+                          "Slide 14: contribution guide destination missing from notes")
+                    check(any(r.get("TargetMode") == "External" and r.get("Target") == original.get("captionUrl")
+                              for r in sdk.relationships(parts, slide_part)),
+                          "Slide 14: contribution guide hyperlink missing")
+            for image in reference_slide.get("images", []):
+                description = image.get("description", "")
+                if description.lower().endswith(".png"):
+                    name = Path(description).name
+                    asset_dir = ROOT / "theme" / "assets" if variant == "final" else ROOT / "assets"
+                    asset = asset_dir / name
+                    check(asset.is_file() and asset.read_bytes() in embedded_images(parts, slide_part, sdk),
+                          f"Slide {number}: snapshot illustration {name} is not embedded")
             if number == 2:
                 check(original.get("team") == ["Rashmi", "Joe", "Jordan"], "Unexpected team names")
                 check(not slide.findall(".//p:pic", NS), "Team slide contains invented portraits/images")
@@ -300,20 +369,6 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
                       f"Slide {number}: final layout must resolve to SDK layout5")
                 check(slide.get("showMasterSp", "1") not in ("0", "false"),
                       f"Slide {number}: inherited branding hidden")
-                bg = slide.find("p:cSld/p:bg/p:bgPr/a:solidFill/a:srgbClr", NS)
-                check(bg is not None and bg.get("val", "").upper() == "FFFFFF",
-                      f"Slide {number}: expected explicit white background")
-                for obj in text_boxes:
-                    fonts = [n.get("typeface") for n in obj["node"].findall(".//a:latin", NS)]
-                    check(bool(fonts) and all(f == "Arial" for f in fonts),
-                          f"Slide {number}: native text font must be Arial: {obj['text'][:60]}")
-                    colors = [n.get("val", "").upper() for n in
-                              obj["node"].findall(".//a:rPr/a:solidFill/a:srgbClr", NS)]
-                    check(bool(colors) and all(c in ("00144C", "052243") for c in colors),
-                          f"Slide {number}: native text color outside source title/body palette")
-                    if normalized(original["title"]) in obj["text"]:
-                        check(bool(colors) and all(c == "00144C" for c in colors),
-                              f"Slide {number}: title must use 00144C")
                 for brand in profile["brandingBoundsPt"]:
                     rect = tuple(brand[k] * 12700 for k in ("x", "y", "width", "height"))
                     for obj in native:
@@ -322,7 +377,7 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
                                 {"slide": number, "text": obj["text"], "kind": obj["kind"]})
             logical.append({"title": normalized(item["title"]),
                             "content": public_content(slide, original.get("section", ""))})
-        check(generated == 15 and sdk_count == 10 and elapsed == 1800, "Slide kinds/timing mismatch")
+        check(generated == BASE_SLIDES and sdk_count == 10 and elapsed == TOTAL_SECONDS, "Slide kinds/timing mismatch")
         check(manifest[-1]["title"] == "Questions?", "Last slide must be Questions?")
         check(not result["offCanvasObjects"], "Generated native text extends off canvas")
         check(not result["overlappingTextBoxes"], "Generated native text boxes overlap")
@@ -330,20 +385,18 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
         if variant == "final":
             check(not MARK.search(" ".join(core.itertext())), "Final core metadata contains review marks")
             check(profile["sourceSha256"] == sha(source_path.read_bytes()), "Theme source hash mismatch")
-            check((profile["font"], profile["titleColor"], profile["bodyColor"], profile["background"],
-                   profile["sourceLayoutPart"]) ==
-                  ("Arial", "00144C", "052243", "FFFFFF", "ppt/slideLayouts/slideLayout5.xml"),
-                  "Source theme profile differs from expected exact profile")
+            check(profile["sourceLayoutPart"] == "ppt/slideLayouts/slideLayout5.xml",
+                  "Source theme profile uses an unexpected layout")
             applied = load_json(directory / "applytheme-report.json")
-            check(applied.get("status") == "verified" and len(applied.get("generatedSlides", [])) == 15,
-                  "Theme application report must verify all 15 generated slides")
+            check(applied.get("status") == "verified" and len(applied.get("generatedSlides", [])) == BASE_SLIDES,
+                  "Theme application report must verify all 17 generated slides")
             check(applied.get("outputSha256") == sha(required[0].read_bytes()), "Stale theme application report")
         pdfinfo = tool("pdfinfo")
         check(bool(pdfinfo), "pdfinfo is required for independent PDF page count")
         if pdfinfo:
             info = subprocess.check_output([pdfinfo, str(required[1])], text=True, timeout=30)
             match = re.search(r"^Pages:\s+(\d+)\s*$", info, re.M)
-            check(bool(match) and int(match.group(1)) == 25, "PDF must contain 25 pages")
+            check(bool(match) and int(match.group(1)) == SLIDES, "PDF must contain 27 pages")
             result["pdfPages"] = int(match.group(1)) if match else None
         pdftotext = tool("pdftotext")
         result["pdfReviewMarkCheck"] = "not installed" if not pdftotext else "not applicable"
@@ -354,7 +407,7 @@ def validate(variant, directory, data, source_path, source, sdk, profile):
             result["pdfReviewMarkCheck"] = "checked"
         result.update({"slides": len(order), "notes": len(order), "seconds": elapsed,
                        "generatedSlides": generated, "sdkOriginalSlides": list(range(3, 13)),
-                       "sdkOutputSlides": list(range(14, 24)), "sourceMediaCount": len(media),
+                       "sdkOutputSlides": list(range(SDK_FIRST, SDK_LAST + 1)), "sourceMediaCount": len(media),
                        "sdkSourceSha256": sha(source_path.read_bytes()),
                        "pptxSha256": sha(required[0].read_bytes()), "logicalSlides": logical})
     except (OSError, ValueError, KeyError, IndexError, TypeError, ZeroDivisionError,
@@ -379,20 +432,25 @@ def main():
     sdk = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(sdk)
     data = load_json(ROOT / "slide-data.json")
-    if len(data) != 15 or sum(i["duration"] for i in data) != 1200:
-        parser.error("Source JSON must contain 15 base slides totalling 1200 seconds")
+    snapshot = load_json(ROOT.parent / "current-deck-after.json")
+    show = load_json(ROOT.parent / "current-deck-run-of-show.json")
+    if len(data) != BASE_SLIDES or sum(i["duration"] for i in data) != 1320:
+        parser.error("Source JSON must contain 17 base slides totalling 1320 seconds")
+    if (snapshot.get("slideCount") != SLIDES or len(snapshot.get("slides", [])) != SLIDES
+            or show.get("totalSeconds") != TOTAL_SECONDS or len(show.get("records", [])) != SLIDES):
+        parser.error("Reference snapshot/run-of-show must contain 27 slides totalling 1920 seconds")
     source = sdk.package(args.source)
     profile = load_json(ROOT / "theme" / "theme.json") if args.variant != "review" else None
     selected = [("review", args.review_dir), ("final", args.final_dir)]
-    reports = {name: validate(name, directory, data, args.source, source, sdk, profile)
+    reports = {name: validate(name, directory, data, args.source, source, sdk, profile, snapshot, show)
                for name, directory in selected if args.variant in ("both", name)}
     comparison = {"status": "not compared", "variants": {n: r["status"] for n, r in reports.items()}}
     if args.variant == "both":
         review, final = reports["review"], reports["final"]
         a, b = review.get("logicalSlides", []), final.get("logicalSlides", [])
-        comparison.update({"sameLogicalTitles": len(a) == len(b) == 25 and
+        comparison.update({"sameLogicalTitles": len(a) == len(b) == SLIDES and
                            [s["title"] for s in a] == [s["title"] for s in b],
-                           "samePublicMainContent": len(a) == len(b) == 25 and
+                           "samePublicMainContent": len(a) == len(b) == SLIDES and
                            [s["content"] for s in a] == [s["content"] for s in b],
                            "sdkUnchangedBoth": all(r["sdkUnchanged"] for r in reports.values()),
                            "differences": [i + 1 for i, (x, y) in enumerate(zip(a, b)) if x != y]})

@@ -1,5 +1,7 @@
 # KubeCon NA 2026 — resource assessment
 
+> **Historical assessment:** The findings and proposals below are dated October 9. The [current outline](kubecon-2026-outline.md#current-google-deck--2026-10-28) tracks the 27-slide, 32-minute Google deck, updated COD model and current evidence. The [demo status](demo-development-status.md) records later development and validated demo runs. Earlier statements below about timing, rollout ownership, unbuilt assets and release evidence describe the assessment at the time, not the current state.
+
 Assessment date: 2026-10-09. Seed: `../kubecon-2026.txt` (not edited by this assessment). All generated work belongs in `~/devel/breadcrumbs/2026-kubecon-wip/` and its subdirectories.
 
 **Event:** KubeCon North America, November 9–12, 2026 (user-confirmed). Updated after the second breadcrumb revision. The update below supersedes first-pass access gaps and unresolved implementation questions where stated; earlier reference tables remain useful background.

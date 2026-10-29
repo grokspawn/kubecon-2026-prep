@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480" role="img" aria-labelledby="title desc">
+  <title id="title">Streamlined installation</title>
+  <desc id="desc">A user creates a ClusterExtension subject to RBAC and admission. The controller uses its own cluster-admin service account to install the extension. The ClusterExtension spec.serviceAccount field is deprecated and ignored.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#113E82"/></marker>
+  </defs>
+  <rect width="720" height="480" fill="#FFFFFF"/>
+  <path d="M28 35h38" stroke="#E42A91" stroke-width="6" stroke-linecap="round"/>
+  <text x="28" y="78" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#00144C">Installation flow</text>
+
+  <rect x="28" y="110" width="130" height="94" rx="14" fill="#FFFFFF" stroke="#113E82" stroke-width="2.5"/>
+  <circle cx="57" cy="140" r="8" fill="none" stroke="#113E82" stroke-width="2.5"/>
+  <path d="M44 165c2-9 8-13 13-13s11 4 13 13" fill="none" stroke="#113E82" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="91" y="148" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#00144C">User</text>
+  <text x="91" y="174" font-family="Arial, sans-serif" font-size="17" fill="#00144C">creates</text>
+
+  <path d="M160 157h22" stroke="#113E82" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="188" y="110" width="184" height="94" rx="14" fill="#F1F6FF" stroke="#113E82" stroke-width="2.5"/>
+  <text x="280" y="147" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#00144C">RBAC +</text>
+  <text x="280" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#00144C">admission</text>
+
+  <path d="M374 157h22" stroke="#113E82" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="402" y="110" width="290" height="94" rx="14" fill="#FFFFFF" stroke="#113E82" stroke-width="2.5"/>
+  <path d="M426 135h20v27h-20zM431 142h10m-10 6h10m-10 6h7" fill="none" stroke="#113E82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="458" y="163" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#00144C">ClusterExtension</text>
+
+  <path d="M547 206v20" stroke="#113E82" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="28" y="234" width="664" height="119" rx="16" fill="#00144C"/>
+  <text x="50" y="276" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">Controller</text>
+  <text x="50" y="303" font-family="Arial, sans-serif" font-size="17" fill="#FFFFFF">owns and uses</text>
+  <path d="M190 294h20" stroke="#FFFFFF" stroke-width="2.5"/>
+  <rect x="216" y="253" width="256" height="80" rx="11" fill="#FFFFFF"/>
+  <path d="M232 271v44" stroke="#E42A91" stroke-width="5" stroke-linecap="round"/>
+  <text x="247" y="284" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#00144C">Service account</text>
+  <text x="247" y="312" font-family="Arial, sans-serif" font-size="19" fill="#00144C">cluster-admin</text>
+  <path d="M485 294h24" stroke="#FFFFFF" stroke-width="2.5"/>
+  <path d="M509 290l8 4-8 4" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="527" y="286" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#FFFFFF">Installs</text>
+  <text x="527" y="310" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#FFFFFF">extension</text>
+
+  <rect x="28" y="378" width="664" height="74" rx="14" fill="#F1F6FF"/>
+  <path d="M47 395v40" stroke="#E42A91" stroke-width="5" stroke-linecap="round"/>
+  <text x="65" y="406" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#113E82">CLUSTEREXTENSION FIELD</text>
+  <text x="65" y="434" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#00144C">spec.serviceAccount</text>
+  <text x="391" y="434" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#00144C">deprecated · ignored</text>
+</svg>

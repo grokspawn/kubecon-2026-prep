@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480" role="img" aria-labelledby="title"><title id="title">Namespace selection: a set namespace is user-managed; an unset namespace is derived from bundle metadata and system-managed</title><defs><marker id="flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#113E82"/></marker></defs><rect width="720" height="480" fill="#FFFFFF"/>
+<text x="360" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="600" fill="#000000">Where bundle objects are installed</text>
+
+<rect x="255" y="72" width="210" height="58" rx="16" fill="#FFFFFF" stroke="#ADC5EF" stroke-width="3"/>
+<text x="360" y="108" text-anchor="middle" font-family="Arial" font-size="22" font-weight="600" fill="#052243">ClusterExtension</text>
+
+<rect x="250" y="160" width="220" height="58" rx="29" fill="#E3F6FF" stroke="#113E82" stroke-width="3"/>
+<text x="360" y="196" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#00144C">spec.namespace set?</text>
+
+<path d="M310,218 L215,300" fill="none" stroke="#113E82" stroke-width="5" stroke-linecap="round" marker-end="url(#flow)"/>
+<path d="M410,218 L505,300" fill="none" stroke="#113E82" stroke-width="5" stroke-linecap="round" marker-end="url(#flow)"/>
+<text x="222" y="252" font-family="Arial" font-size="20" font-weight="600" fill="#113E82">set</text>
+<text x="470" y="252" font-family="Arial" font-size="20" font-weight="600" fill="#113E82">unset</text>
+
+<rect x="45" y="308" width="260" height="86" rx="16" fill="#FFFFFF" stroke="#ADC5EF" stroke-width="3"/>
+<text x="175" y="342" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#052243">Install into that</text>
+<text x="175" y="368" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#052243">namespace</text>
+<text x="175" y="466" text-anchor="middle" font-family="Arial" font-size="19" font-weight="400" fill="#5D6B7B">User-managed</text>
+
+<rect x="415" y="308" width="260" height="86" rx="16" fill="#E3F6FF" stroke="#113E82" stroke-width="3"/>
+<text x="545" y="342" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#00144C">Derive from bundle</text>
+<text x="545" y="368" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#00144C">metadata</text>
+<rect x="415" y="412" width="260" height="52" rx="14" fill="#FFEE88" stroke="#D62293" stroke-width="3"/>
+<text x="545" y="436" text-anchor="middle" font-family="Arial" font-size="19" font-weight="600" fill="#D62293">Deleted with the extension</text>
+<text x="545" y="466" text-anchor="middle" font-family="Arial" font-size="19" font-weight="400" fill="#5D6B7B">System-managed</text>
+</svg>

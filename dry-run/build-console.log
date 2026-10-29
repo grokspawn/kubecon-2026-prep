@@ -1,0 +1,54 @@
+Built base 1/17 (output 1): The Next Era of Kubernetes Operator Lifecycle Management
+Built base 2/17 (output 2): Presentation team
+Built base 3/17 (output 3): Compatibility and lifecycle foundations
+Built base 4/17 (output 4): OLM: past, current and future
+Built base 5/17 (output 5): Streamlined Installation
+Built base 6/17 (output 6): Namespace Management
+Built base 7/17 (output 7): Inspect phased resource rollouts
+Built base 8/17 (output 8): User control of extension deployments
+Built base 9/17 (output 9): OLMv0 → OLMv1 migration
+Built base 10/17 (output 10): Install a bundle directly
+Built base 11/17 (output 11): Planned Helm content support
+Built base 12/17 (output 12): Catalog performance and content types
+Built base 13/17 (output 13): Shared lifecycle logic in library-olm
+Built base 14/17 (output 14): Contribute to Operator Framework
+Built base 15/17 (output 15): Operator Framework: Java Operator SDK
+Built base 16/17 (output 26): Resources and contribution steps
+Built base 17/17 (output 27): Questions?
+{"status": "import_verified", "displayed_slides": 27, "expected_displayed_slides": 27, "report": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/import-report.json"}
+
+Fontconfig warning: no <cachedir> elements found. Check configuration.
+Fontconfig warning: adding <cachedir>/usr/local/var/cache/fontconfig</cachedir>
+Fontconfig warning: adding <cachedir prefix="xdg">fontconfig</cachedir>
+convert /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/kubecon-2026-dry-run.pptx as a Impress document -> /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/kubecon-2026-dry-run.pdf using filter : impress_pdf_Export
+Overwriting: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/dry-run/kubecon-2026-dry-run.pdf
+
+dry-run: PPTX, PDF, notes and 27 rendered previews ready.
+Built base 1/17 (output 1): The Next Era of Kubernetes Operator Lifecycle Management
+Built base 2/17 (output 2): Presentation team
+Built base 3/17 (output 3): Compatibility and lifecycle foundations
+Built base 4/17 (output 4): OLM: past, current and future
+Built base 5/17 (output 5): Streamlined Installation
+Built base 6/17 (output 6): Namespace Management
+Built base 7/17 (output 7): Inspect phased resource rollouts
+Built base 8/17 (output 8): User control of extension deployments
+Built base 9/17 (output 9): OLMv0 → OLMv1 migration
+Built base 10/17 (output 10): Install a bundle directly
+Built base 11/17 (output 11): Planned Helm content support
+Built base 12/17 (output 12): Catalog performance and content types
+Built base 13/17 (output 13): Shared lifecycle logic in library-olm
+Built base 14/17 (output 14): Contribute to Operator Framework
+Built base 15/17 (output 15): Operator Framework: Java Operator SDK
+Built base 16/17 (output 26): Resources and contribution steps
+Built base 17/17 (output 27): Questions?
+{"status": "import_verified", "displayed_slides": 27, "expected_displayed_slides": 27, "report": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/import-report.json"}
+
+{"status": "verified", "generatedSlides": 17, "report": "/Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/applytheme-report.json"}
+
+Fontconfig warning: no <cachedir> elements found. Check configuration.
+Fontconfig warning: adding <cachedir>/usr/local/var/cache/fontconfig</cachedir>
+Fontconfig warning: adding <cachedir prefix="xdg">fontconfig</cachedir>
+convert /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/kubecon-2026-final.pptx as a Impress document -> /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/kubecon-2026-final.pdf using filter : impress_pdf_Export
+Overwriting: /Users/jordan/Documents/devel/breadcrumbs/2026-kubecon-wip/final/kubecon-2026-final.pdf
+
+final: PPTX, PDF, notes and 27 rendered previews ready.
